@@ -96,23 +96,27 @@ const RealTimeTimer = ({
     const billColor = isTimeUp ? 'text-red-500' : 'text-[var(--accent-primary)]';
 
     return (
-        <div className="text-center w-full">
-            <div className={`text-2xl font-mono font-bold tracking-widest ${timerColor} drop-shadow-md mb-1`}>
+        <div className="w-full flex flex-col items-center justify-center py-1 flex-1">
+            <div className={`text-4xl font-mono font-bold tracking-widest ${timerColor} drop-shadow-md mb-2`}>
                 {timeDisplay}
             </div>
 
-            {/* Countdown info for fixed packages */}
-            {isFixedPackage && (
-                <div className={`text-[10px] font-mono mb-1 ${isTimeUp ? 'text-red-500 animate-pulse' : isAlmostUp ? 'text-[var(--accent-secondary)]' : 'text-[var(--text-muted)]'}`}>
-                    {isTimeUp ? '⏰ WAKTU HABIS!' : `Sisa: ${remainMins}:${remainSecs.toString().padStart(2, '0')}`}
-                </div>
-            )}
+            {/* Countdown info - Always rendered for layout consistency, invisible if not fixed package */}
+            <div className={`text-xs font-mono font-bold uppercase mb-2 transition-colors ${isFixedPackage
+                ? (isTimeUp ? 'text-red-500 animate-pulse' : isAlmostUp ? 'text-[var(--accent-secondary)]' : 'text-[var(--text-muted)]')
+                : 'invisible' // Preserve space
+                }`}>
+                {isFixedPackage
+                    ? (isTimeUp ? '⏰ WAKTU HABIS!' : `Sisa: ${remainMins}:${remainSecs.toString().padStart(2, '0')}`)
+                    : 'Sisa: 00:00' // Placeholder text for height
+                }
+            </div>
 
-            <div className="bg-[var(--bg-overlay)] rounded py-1 px-2 border border-white/10 w-full flex justify-between items-center">
-                <span className="text-[8px] uppercase text-[var(--text-muted)] font-bold tracking-wider">
-                    {isFixedPackage ? 'Paket' : 'Bill'}
+            <div className="bg-[var(--bg-overlay)] rounded-lg py-2 px-3 border border-white/5 w-full flex justify-between items-center mt-auto shadow-inner bg-black/20">
+                <span className="text-[10px] uppercase text-[var(--text-muted)] font-bold tracking-wider">
+                    {isFixedPackage ? 'PAKET' : 'TAGIHAN'}
                 </span>
-                <span className={`font-mono font-bold ${billColor} text-xs`}>
+                <span className={`font-mono font-bold ${billColor} text-xl`}>
                     Rp {bill.toLocaleString()}
                 </span>
             </div>
@@ -179,12 +183,12 @@ const ListViewTimer = ({ startTime, endTime, hourlyRate }: { startTime: string, 
                 )}
             </div>
             <div className="flex flex-col items-end w-32">
-                <span className="text-[10px] text-[var(--text-muted)] uppercase font-bold tracking-wider mb-0.5">Current Bill</span>
+                <span className="text-[10px] text-[var(--text-muted)] uppercase font-bold tracking-wider mb-0.5">TAGIHAN</span>
                 <span className="font-mono font-bold text-[var(--accent-primary)] text-xl leading-none drop-shadow-sm">
                     Rp {bill.toLocaleString()}
                 </span>
                 {isFixedPackage && (
-                    <span className="text-[10px] text-[var(--text-muted)] mt-0.5">Fixed Price</span>
+                    <span className="text-[10px] text-[var(--text-muted)] mt-0.5">Harga Tetap</span>
                 )}
             </div>
         </div>
@@ -937,7 +941,7 @@ export default function DashboardPage() {
         switch (status) {
             case 'AVAILABLE': return 'bg-[var(--bg-card)] border-[var(--border-default)] text-[var(--text-primary)] hover:border-[var(--accent-primary)]/50';
             case 'ACTIVE': return 'bg-[#0f391e] border-[var(--accent-primary)] text-[var(--text-primary)] ring-1 ring-[#f07000]/50';
-            case 'BOOKED': return 'bg-[#3f2e0b] border-[var(--accent-secondary)] text-[var(--accent-secondary)]';
+            case 'BOOKED': return 'bg-[#3f2e0b] border-yellow-500 text-yellow-500';
             case 'CLEANING': return 'bg-[#2a1b3d] border-[#a855f7] text-[#a855f7]';
             case 'MAINTENANCE': return 'bg-[#0e2a36] border-[#0ea5e9] text-[#0ea5e9]';
             default: return 'bg-[var(--bg-card)] border-[var(--border-default)] text-[var(--text-primary)]';
@@ -1026,7 +1030,7 @@ export default function DashboardPage() {
                         </div>
                         <div className="flex items-center gap-2 text-xs bg-[var(--bg-card)] px-2 py-1 rounded border border-[var(--border-default)]">
                             <div className="size-2 rounded-full bg-[var(--accent-primary)]"></div> Active
-                            <div className="size-2 rounded-full bg-[var(--accent-secondary)] ml-2"></div> Booked
+                            <div className="size-2 rounded-full bg-yellow-500 ml-2"></div> Booked
                             <div className="size-2 rounded-full bg-slate-500 ml-2"></div> Available
                         </div>
                     </div>
@@ -1094,7 +1098,7 @@ export default function DashboardPage() {
                                             setSelectedId(table.id);
                                         }
                                     }}
-                                    className={`relative p-4 rounded-xl border transition-all hover:scale-[1.02] flex flex-col justify-between h-48 shadow-lg group cursor-pointer
+                                    className={`relative p-5 rounded-2xl border transition-all hover:scale-[1.02] flex flex-col justify-between h-[270px] shadow-xl group cursor-pointer overflow-hidden
                           ${getStatusColor(table.status)}
                           ${selectedId === table.id ? 'ring-2 ring-transparent' : ''}
                         `}
@@ -1134,11 +1138,11 @@ export default function DashboardPage() {
                                                 }}
                                             />
                                         ) : (
-                                            <div className="flex flex-col items-center opacity-30 group-hover:opacity-60 transition-opacity">
-                                                <div className="size-12 rounded-full border-2 border-dashed border-white flex items-center justify-center mb-1">
-                                                    <Plus size={20} />
+                                            <div className="flex flex-col items-center justify-center flex-1 w-full opacity-30 group-hover:opacity-60 transition-opacity">
+                                                <div className="size-16 rounded-full border-2 border-dashed border-white flex items-center justify-center mb-2 bg-white/5">
+                                                    <Plus size={24} />
                                                 </div>
-                                                <span className="text-xs font-medium">{table.status}</span>
+                                                <span className="text-sm font-bold tracking-widest uppercase">{table.status}</span>
                                             </div>
                                         )}
                                     </div>
@@ -1173,15 +1177,15 @@ export default function DashboardPage() {
                                 >
                                     <div className="flex items-center gap-6 h-full">
                                         <div className={`size-3 rounded-full shrink-0 ${table.status === 'ACTIVE' ? 'bg-[var(--accent-primary)] animate-pulse shadow-[0_0_8px_var(--accent-primary)]' :
-                                            table.status === 'BOOKED' ? 'bg-[var(--accent-secondary)]' :
+                                            table.status === 'BOOKED' ? 'bg-yellow-500' :
                                                 table.status === 'MAINTENANCE' ? 'bg-[#0ea5e9]' : 'bg-slate-500'
                                             }`}></div>
 
                                         <div className="w-[180px]">
                                             <h3 className="font-bold text-[var(--text-primary)] text-xl leading-tight mb-1">{table.name}</h3>
                                             <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded border inline-block ${table.type === 'VIP' ? 'text-[#c084fc] border-[#c084fc]/30 bg-[#c084fc]/10' :
-                                                    table.type === 'SNOOKER' ? 'text-[#f97316] border-[#f97316]/30 bg-[#f97316]/10' :
-                                                        'text-[#4ade80] border-[#4ade80]/30 bg-[#4ade80]/10'
+                                                table.type === 'SNOOKER' ? 'text-[#f97316] border-[#f97316]/30 bg-[#f97316]/10' :
+                                                    'text-[#4ade80] border-[#4ade80]/30 bg-[#4ade80]/10'
                                                 }`}>
                                                 {table.type || 'REGULAR'}
                                             </span>

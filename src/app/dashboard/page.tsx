@@ -958,8 +958,9 @@ export default function DashboardPage() {
                 // Sync with server data
                 mutate();
             }
-        } catch (e) {
+        } catch (e: any) {
             console.error('Action error:', e);
+            showToast('error', e.message || 'Gagal melakukan aksi');
             mutate(); // Revert on error
         } finally {
             setIsActionLoading(false);

@@ -851,7 +851,6 @@ const ReservationModal = ({ onClose, onSuccess }: { onClose: () => void, onSucce
                                 <option value="REGULAR">Regular</option>
                                 <option value="VIP">VIP</option>
                                 <option value="SNOOKER">Snooker</option>
-                                <option value="SNOOKER">Snooker</option>
                             </select>
                         </div>
                     </div>

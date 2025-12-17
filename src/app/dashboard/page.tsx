@@ -1022,7 +1022,24 @@ export default function DashboardPage() {
 
                 {/* Grid Area */}
                 <div className="flex-1 overflow-y-auto p-6">
-                    {viewMode === 'grid' ? (
+                    {!tablesData && (
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-pulse">
+                            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                                <div key={i} className="h-48 rounded-xl bg-[var(--bg-card)] border border-[var(--border-default)] p-4 flex flex-col justify-between">
+                                    <div className="flex justify-between items-start">
+                                        <div className="h-6 w-24 bg-[var(--border-default)] rounded"></div>
+                                        <div className="size-3 rounded-full bg-[var(--border-default)]"></div>
+                                    </div>
+                                    <div className="flex justify-center">
+                                        <div className="size-16 rounded-full bg-[var(--border-default)]"></div>
+                                    </div>
+                                    <div className="h-4 w-full bg-[var(--border-default)] rounded mt-4"></div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {tablesData && viewMode === 'grid' ? (
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                             {tables.map((table: any) => (
                                 <div

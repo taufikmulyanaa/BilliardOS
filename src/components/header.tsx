@@ -7,11 +7,13 @@ import {
     Gamepad2, Search, LogOut, Settings, User
 } from 'lucide-react';
 import { BookingAlerts } from './booking-alerts';
+import { useAuth } from './auth-provider';
 
 
 export default function Header() {
     const pathname = usePathname();
     const router = useRouter();
+    const { user, logout } = useAuth();
     const [showProfileMenu, setShowProfileMenu] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [showSearchResults, setShowSearchResults] = useState(false);
@@ -41,8 +43,10 @@ export default function Header() {
         };
     };
 
-    const handleLogout = () => {
-        window.location.href = '/logout';
+    const handleLogout = async () => {
+        await logout();
+        // Router push is handled in auth-provider, but we can ensure menu closes
+        setShowProfileMenu(false);
     };
 
     return (
@@ -164,8 +168,8 @@ export default function Header() {
                             style={{ backgroundColor: showProfileMenu ? 'var(--bg-elevated)' : 'transparent' }}
                         >
                             <div className="text-right hidden sm:block">
-                                <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>Admin Staff</p>
-                                <p className="text-xs" style={{ color: 'var(--accent-primary)' }}>Online</p>
+                                <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{user?.fullName || 'User'}</p>
+                                <p className="text-xs" style={{ color: 'var(--accent-primary)' }}>{user?.role || 'Staff'}</p>
                             </div>
                             <div
                                 className="rounded w-10 h-10"
@@ -186,8 +190,8 @@ export default function Header() {
                                 border: '1px solid var(--border-default)'
                             }}>
                                 <div className="p-3" style={{ borderBottom: '1px solid var(--border-default)' }}>
-                                    <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Admin Staff</p>
-                                    <p className="text-xs" style={{ color: 'var(--text-muted)' }}>admin@billiard.com</p>
+                                    <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>{user?.fullName || 'User'}</p>
+                                    <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{user?.username || 'user'}</p>
                                 </div>
                                 <div className="py-1">
                                     <button

@@ -672,7 +672,7 @@ const AddOrderModal = ({ sessionId, onClose, onSuccess }: { sessionId: number, o
 const WalkinModal = ({ tables, onClose, onSuccess }: { tables: any[], onClose: () => void, onSuccess: () => void }) => {
     const [customerName, setCustomerName] = useState('');
     const [pax, setPax] = useState(2);
-    const [tableType, setTableType] = useState<'REGULAR' | 'VIP'>('REGULAR');
+    const [tableType, setTableType] = useState<'REGULAR' | 'VIP' | 'SNOOKER'>('REGULAR');
     const [selectedTable, setSelectedTable] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -747,6 +747,7 @@ const WalkinModal = ({ tables, onClose, onSuccess }: { tables: any[], onClose: (
                                 className="w-full bg-[var(--bg-base)] border border-[var(--border-default)] rounded p-2 text-[var(--text-primary)]">
                                 <option value="REGULAR">Regular</option>
                                 <option value="VIP">VIP</option>
+                                <option value="SNOOKER">Snooker</option>
                             </select>
                         </div>
                     </div>
@@ -786,7 +787,7 @@ const ReservationModal = ({ onClose, onSuccess }: { onClose: () => void, onSucce
     const [customerName, setCustomerName] = useState('');
     const [phone, setPhone] = useState('');
     const [pax, setPax] = useState(2);
-    const [tableType, setTableType] = useState<'REGULAR' | 'VIP'>('REGULAR');
+    const [tableType, setTableType] = useState<'REGULAR' | 'VIP' | 'SNOOKER'>('REGULAR');
     const [bookingDate, setBookingDate] = useState(new Date().toISOString().split('T')[0]);
     const [bookingTime, setBookingTime] = useState('19:00');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -849,6 +850,8 @@ const ReservationModal = ({ onClose, onSuccess }: { onClose: () => void, onSucce
                                 className="w-full bg-[var(--bg-base)] border border-[var(--border-default)] rounded p-2 text-[var(--text-primary)]">
                                 <option value="REGULAR">Regular</option>
                                 <option value="VIP">VIP</option>
+                                <option value="SNOOKER">Snooker</option>
+                                <option value="SNOOKER">Snooker</option>
                             </select>
                         </div>
                     </div>
@@ -1054,8 +1057,8 @@ export default function DashboardPage() {
                                         <div className="flex flex-col">
                                             <span className="font-bold text-xl leading-none">{table.name}</span>
                                             <span className={`text-[10px] mt-1.5 uppercase tracking-wide font-bold px-2 py-0.5 rounded border w-fit ${(table.type === 'VIP')
-                                                    ? 'text-[#c084fc] border-[#c084fc]/30 bg-[#c084fc]/10'
-                                                    : 'text-[#4ade80] border-[#4ade80]/30 bg-[#4ade80]/10'
+                                                ? 'text-[#c084fc] border-[#c084fc]/30 bg-[#c084fc]/10'
+                                                : 'text-[#4ade80] border-[#4ade80]/30 bg-[#4ade80]/10'
                                                 }`}>
                                                 {table.type || 'REGULAR'}
                                             </span>
@@ -1129,8 +1132,8 @@ export default function DashboardPage() {
                                         <div>
                                             <h3 className="font-bold text-[var(--text-primary)] text-lg">{table.name}</h3>
                                             <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded border ${(table.type === 'VIP')
-                                                    ? 'text-[#c084fc] border-[#c084fc]/30 bg-[#c084fc]/10'
-                                                    : 'text-[#4ade80] border-[#4ade80]/30 bg-[#4ade80]/10'
+                                                ? 'text-[#c084fc] border-[#c084fc]/30 bg-[#c084fc]/10'
+                                                : 'text-[#4ade80] border-[#4ade80]/30 bg-[#4ade80]/10'
                                                 }`}>
                                                 {table.type || 'REGULAR'}
                                             </span>

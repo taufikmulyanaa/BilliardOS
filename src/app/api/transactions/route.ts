@@ -48,69 +48,95 @@ export async function POST(request: Request) {
         // Generate Invoice No
         const invoiceNo = `INV-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
-        // Use raw SQL - need explicit CAST for PostgreSQL enums
-        const orderResult = await prisma.$queryRawUnsafe<{ id: number }[]>(`
-            INSERT INTO orders (
-                invoice_no, session_id, member_id, customer_name, subtotal, 
-                discount_amount, points_redeemed, tax_amount, 
-                total_amount, payment_method, payment_status, created_at
-            ) VALUES (
-                $1, $2, $3, $4, $5,
-                $6, $7, $8,
-                $9, $10::"PaymentMethod", 'PAID'::"PaymentStatus", NOW()
-            )
-            RETURNING id
-        `, invoiceNo, sessionId || null, memberId || null, customerName || null, subtotal,
-            discountAmount, pointsRedeemed, taxAmount, totalAmount, paymentMethod
+        // Prepare Transaction Operations
+        const operations: any[] = [];
+
+        // 1. Create Order & Items
+        operations.push(
+            prisma.order.create({
+                data: {
+                    invoiceNo,
+                    sessionId: sessionId || null,
+                    memberId: memberId || null,
+                    customerName: customerName || null,
+                    subtotal,
+                    discountAmount,
+                    pointsRedeemed,
+                    taxAmount,
+                    totalAmount,
+                    paymentMethod,
+                    paymentStatus: 'PAID',
+                    items: {
+                        create: items.map(item => ({
+                            productId: item.type === 'PRODUCT' ? item.id : null,
+                            itemName: item.name,
+                            quantity: item.qty,
+                            unitPrice: item.price,
+                            totalPrice: item.price * item.qty
+                        }))
+                    }
+                }
+            })
         );
 
-        const orderId = orderResult[0]?.id;
-        if (!orderId) throw new Error("Failed to create order");
-
-        // Insert order items
+        // 2. Reduce Stock for Products
         for (const item of items) {
-            await prisma.$executeRaw`
-                INSERT INTO order_items (
-                    order_id, product_id, item_name, quantity, unit_price, total_price
-                ) VALUES (
-                    ${orderId}, ${item.type === 'PRODUCT' ? item.id : null},
-                    ${item.name}, ${item.qty}, ${item.price}, ${item.price * item.qty}
-                )
-            `;
-
-            // Reduce stock for products
             if (item.type === 'PRODUCT' && item.id) {
-                await prisma.$executeRaw`
-                    UPDATE products SET stock_qty = stock_qty - ${item.qty} WHERE id = ${item.id}
-                `;
+                operations.push(
+                    prisma.product.update({
+                        where: { id: item.id },
+                        data: { stockQty: { decrement: item.qty } }
+                    })
+                );
             }
         }
 
-        // Handle Points (if member)
+        // 3. Handle Member Points
         if (memberId) {
+            // Redeem Points
             if (pointsRedeemed > 0) {
-                await prisma.$executeRaw`
-                    UPDATE members SET points_balance = points_balance - ${pointsRedeemed} WHERE id = ${memberId}
-                `;
-                await prisma.$executeRaw`
-                    INSERT INTO point_transactions (member_id, type, amount, description, created_at)
-                    VALUES (${memberId}, 'REDEEM', ${-pointsRedeemed}, ${`Redeemed for ${invoiceNo}`}, NOW())
-                `;
+                operations.push(
+                    prisma.member.update({
+                        where: { id: memberId },
+                        data: { pointsBalance: { decrement: pointsRedeemed } }
+                    }),
+                    prisma.pointTransaction.create({
+                        data: {
+                            memberId,
+                            type: 'REDEEM',
+                            amount: -pointsRedeemed,
+                            description: `Redeemed for ${invoiceNo}`
+                        }
+                    })
+                );
             }
 
+            // Earn Points
             const pointsEarned = Math.floor(totalAmount / 10000);
             if (pointsEarned > 0) {
-                await prisma.$executeRaw`
-                    UPDATE members SET points_balance = points_balance + ${pointsEarned} WHERE id = ${memberId}
-                `;
-                await prisma.$executeRaw`
-                    INSERT INTO point_transactions (member_id, type, amount, description, created_at)
-                    VALUES (${memberId}, 'EARN', ${pointsEarned}, ${`Transaction ${invoiceNo}`}, NOW())
-                `;
+                operations.push(
+                    prisma.member.update({
+                        where: { id: memberId },
+                        data: { pointsBalance: { increment: pointsEarned } }
+                    }),
+                    prisma.pointTransaction.create({
+                        data: {
+                            memberId,
+                            type: 'EARN',
+                            amount: pointsEarned,
+                            description: `Transaction ${invoiceNo}`
+                        }
+                    })
+                );
             }
         }
 
-        return NextResponse.json({ success: true, order: { id: orderId, invoiceNo } });
+        // Execute All Operations in Transaction
+        const results = await prisma.$transaction(operations);
+        const order = results[0]; // First operation is order create
+
+        return NextResponse.json({ success: true, order: { id: order.id, invoiceNo } });
+
     } catch (error) {
         console.error("Transaction Error:", error);
         if (error instanceof z.ZodError) {
@@ -119,7 +145,6 @@ export async function POST(request: Request) {
                 details: error.issues
             }, { status: 400 });
         }
-        // Return actual error message for debugging
         const message = error instanceof Error ? error.message : "Internal Error";
         return NextResponse.json({ error: message }, { status: 500 });
     }

@@ -340,13 +340,18 @@ export default function ReportsPage() {
                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
                     <div>
                         <h2 className="text-2xl font-bold text-[var(--text-primary)]">Riwayat Transaksi</h2>
-                        <div className="text-sm text-[var(--text-muted)]">Total {transactionsData?.meta?.total || 0} transaksi</div>
+                        <div className="text-sm text-[var(--text-muted)]">
+                            Total {transactionsData?.meta?.total || 0} transaksi •
+                            <span className="text-[var(--accent-primary)] font-bold ml-1">
+                                Pendapatan: Rp {Number(transactionsData?.summary?.totalRevenue || 0).toLocaleString()}
+                            </span>
+                        </div>
                     </div>
                     <div className="flex flex-wrap gap-2 items-center">
                         <select
                             value={exportScope}
                             onChange={(e) => setExportScope(e.target.value as 'ALL' | 'PAGE')}
-                            className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded px-3 py-2 text-[var(--text-primary)] text-xs focus:border-[var(--accent-primary)] outline-none"
+                            className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-sm px-3 py-2 text-[var(--text-primary)] text-xs focus:border-[var(--accent-primary)] outline-none"
                         >
                             <option value="ALL">Semua Data</option>
                             <option value="PAGE">Halaman Ini</option>
@@ -361,7 +366,7 @@ export default function ReportsPage() {
                 </div>
 
                 {/* Filters */}
-                <div className="bg-[var(--bg-card)] p-4 rounded-xl border border-[var(--border-default)] mb-6 flex flex-col xl:flex-row xl:items-end gap-4">
+                <div className="bg-[var(--bg-card)] p-4 rounded-sm border border-[var(--border-default)] mb-6 flex flex-col xl:flex-row xl:items-end gap-4">
                     <div className="flex-1 w-full xl:w-auto">
                         <label className="text-xs text-[var(--text-muted)] mb-1 block">Cari Invoice / Customer</label>
                         <div className="relative">
@@ -371,7 +376,7 @@ export default function ReportsPage() {
                                 placeholder="Search..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="w-full bg-[var(--bg-base)] border border-[var(--border-default)] rounded pl-10 pr-4 py-2 text-[var(--text-primary)] text-sm focus:border-[var(--accent-primary)] outline-none"
+                                className="w-full bg-[var(--bg-base)] border border-[var(--border-default)] rounded-sm pl-10 pr-4 py-2 text-[var(--text-primary)] text-sm focus:border-[var(--accent-primary)] outline-none"
                             />
                         </div>
                     </div>
@@ -380,7 +385,7 @@ export default function ReportsPage() {
                         <select
                             value={paymentFilter}
                             onChange={(e) => setPaymentFilter(e.target.value)}
-                            className="bg-[var(--bg-base)] border border-[var(--border-default)] rounded px-4 py-2 text-[var(--text-primary)] text-sm focus:border-[var(--accent-primary)] outline-none"
+                            className="bg-[var(--bg-base)] border border-[var(--border-default)] rounded-sm px-4 py-2 text-[var(--text-primary)] text-sm focus:border-[var(--accent-primary)] outline-none"
                         >
                             <option value="ALL">Semua</option>
                             <option value="CASH">Cash</option>
@@ -396,7 +401,7 @@ export default function ReportsPage() {
                                 type="date"
                                 value={dateRange.start}
                                 onChange={(e) => setDateRange({ ...dateRange, start: e.target.value })}
-                                className="bg-[var(--bg-base)] border border-[var(--border-default)] rounded px-3 py-2 text-[var(--text-primary)] text-sm focus:border-[var(--accent-primary)] outline-none"
+                                className="bg-[var(--bg-base)] border border-[var(--border-default)] rounded-sm px-3 py-2 text-[var(--text-primary)] text-sm focus:border-[var(--accent-primary)] outline-none"
                             />
                         </div>
                         <div>
@@ -405,14 +410,14 @@ export default function ReportsPage() {
                                 type="date"
                                 value={dateRange.end}
                                 onChange={(e) => setDateRange({ ...dateRange, end: e.target.value })}
-                                className="bg-[var(--bg-base)] border border-[var(--border-default)] rounded px-3 py-2 text-[var(--text-primary)] text-sm focus:border-[var(--accent-primary)] outline-none"
+                                className="bg-[var(--bg-base)] border border-[var(--border-default)] rounded-sm px-3 py-2 text-[var(--text-primary)] text-sm focus:border-[var(--accent-primary)] outline-none"
                             />
                         </div>
                     </div>
                 </div>
 
-                <div className="bg-[var(--bg-card)] rounded-xl border border-[var(--border-default)] flex flex-col">
-                    <div className="overflow-x-auto rounded-t-xl">
+                <div className="bg-[var(--bg-card)] rounded-sm border border-[var(--border-default)] flex flex-col">
+                    <div className="overflow-x-auto rounded-t-sm">
                         <table className="w-full text-left text-sm">
                             <thead className="bg-[var(--bg-surface)] text-[var(--text-muted)] border-b border-[var(--border-default)] text-xs uppercase font-bold tracking-wider">
                                 <tr>
@@ -432,7 +437,7 @@ export default function ReportsPage() {
                                         <td className="p-2 text-[var(--text-muted)]">{new Date(trx.createdAt).toLocaleString()}</td>
                                         <td className="p-2 font-medium">{trx.resolvedCustomerName || trx.member?.fullName || 'Guest'}</td>
                                         <td className="p-2 text-center">
-                                            <span className="px-1.5 py-0.5 bg-[var(--bg-base)] rounded text-[10px] border border-[var(--border-default)]">
+                                            <span className="px-1.5 py-0.5 bg-[var(--bg-base)] rounded-sm text-[10px] border border-[var(--border-default)]">
                                                 {trx.items?.length || 0} items
                                             </span>
                                         </td>
@@ -440,12 +445,12 @@ export default function ReportsPage() {
                                             Rp {Number(trx.totalAmount).toLocaleString()}
                                         </td>
                                         <td className="p-2 text-center">
-                                            <span className="text-[10px] px-1.5 py-0.5 rounded border border-[var(--border-default)] uppercase text-[var(--text-muted)]">
+                                            <span className="text-[10px] px-1.5 py-0.5 rounded-sm border border-[var(--border-default)] uppercase text-[var(--text-muted)]">
                                                 {trx.paymentMethod}
                                             </span>
                                         </td>
                                         <td className="p-2 text-center">
-                                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] border border-[var(--accent-primary)]/20 font-bold">
+                                            <span className="text-[10px] px-1.5 py-0.5 rounded-sm bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] border border-[var(--accent-primary)]/20 font-bold">
                                                 PAID
                                             </span>
                                         </td>
@@ -463,7 +468,7 @@ export default function ReportsPage() {
 
                     {/* Pagination Controls - Numbered */}
                     {transactionsData && (
-                        <div className="bg-[var(--bg-surface)] border-t border-[var(--border-default)] p-3 flex items-center justify-between rounded-b-xl">
+                        <div className="bg-[var(--bg-surface)] border-t border-[var(--border-default)] p-3 flex items-center justify-between rounded-b-sm">
                             <div className="text-xs text-[var(--text-muted)]">
                                 Total {transactionsData.meta?.total || 0} results
                             </div>
@@ -471,7 +476,7 @@ export default function ReportsPage() {
                                 <button
                                     onClick={() => setPage(p => Math.max(1, p - 1))}
                                     disabled={!transactionsData.meta?.hasPrevPage}
-                                    className="px-3 py-1 bg-[var(--bg-card)] border border-[var(--border-default)] rounded text-xs text-[var(--text-primary)] disabled:opacity-30 hover:bg-[var(--accent-primary)] hover:text-black hover:border-transparent transition-all"
+                                    className="px-3 py-1 bg-[var(--bg-card)] border border-[var(--border-default)] rounded-sm text-xs text-[var(--text-primary)] disabled:opacity-30 hover:bg-[var(--accent-primary)] hover:text-black hover:border-transparent transition-all"
                                 >
                                     Prev
                                 </button>
@@ -491,112 +496,111 @@ export default function ReportsPage() {
                                     if (pNum <= 0) return null;
 
                                     return (
-                                        <button
-                                            key={i}
-                                            onClick={() => setPage(pNum)}
-                                            className={`w-8 h-7 flex items-center justify-center rounded text-xs border transition-all
+                                        key = { i }
+                                            onClick = {() => setPage(pNum)}
+                                className={`w-8 h-7 flex items-center justify-center rounded-sm text-xs border transition-all
                                                 ${page === pNum
-                                                    ? 'bg-[var(--accent-primary)] text-black border-[var(--accent-primary)] font-bold'
-                                                    : 'bg-[var(--bg-card)] text-[var(--text-muted)] border-[var(--border-default)] hover:text-[var(--text-primary)] hover:border-[var(--accent-primary)]'
-                                                }`}
+                                        ? 'bg-[var(--accent-primary)] text-black border-[var(--accent-primary)] font-bold'
+                                        : 'bg-[var(--bg-card)] text-[var(--text-muted)] border-[var(--border-default)] hover:text-[var(--text-primary)] hover:border-[var(--accent-primary)]'
+                                    }`}
                                         >
-                                            {pNum}
-                                        </button>
-                                    );
+                                {pNum}
+                            </button>
+                            );
                                 })}
 
-                                <button
-                                    onClick={() => setPage(p => p + 1)}
-                                    disabled={!transactionsData.meta?.hasNextPage}
-                                    className="px-3 py-1 bg-[var(--bg-card)] border border-[var(--border-default)] rounded text-xs text-[var(--text-primary)] disabled:opacity-30 hover:bg-[var(--accent-primary)] hover:text-black hover:border-transparent transition-all"
-                                >
-                                    Next
-                                </button>
-                            </div>
+                            <button
+                                onClick={() => setPage(p => p + 1)}
+                                disabled={!transactionsData.meta?.hasNextPage}
+                                className="px-3 py-1 bg-[var(--bg-card)] border border-[var(--border-default)] rounded-sm text-xs text-[var(--text-primary)] disabled:opacity-30 hover:bg-[var(--accent-primary)] hover:text-black hover:border-transparent transition-all"
+                            >
+                                Next
+                            </button>
+                        </div>
                         </div>
                     )}
-                </div>
             </div>
+            </div >
         );
-    };
+};
 
-    return (
-        <div className="flex min-h-screen bg-[var(--bg-base)]">
-            {/* Sidebar */}
-            <div className="w-64 bg-[var(--bg-surface)] border-r border-[var(--border-default)] p-4 hidden md:block print:hidden">
-                <nav className="space-y-1 mt-4">
-                    <button
-                        onClick={() => setActiveView('SHIFT')}
-                        className={`w-full text-left p-3 rounded-lg flex items-center gap-3 transition-colors ${activeView === 'SHIFT'
-                            ? 'bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] font-bold border border-[var(--accent-primary)]/20'
-                            : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated)]'
-                            }`}
-                    >
-                        <FileText size={18} />
-                        Laporan Shift
-                    </button>
-                    <button
-                        onClick={() => setActiveView('TRANSACTIONS')}
-                        className={`w-full text-left p-3 rounded-lg flex items-center gap-3 transition-colors ${activeView === 'TRANSACTIONS'
-                            ? 'bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] font-bold border border-[var(--accent-primary)]/20'
-                            : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated)]'
-                            }`}
-                    >
-                        <History size={18} />
-                        Riwayat Transaksi
-                    </button>
-                </nav>
-            </div>
-
-            {/* Main Content */}
-            <div className="flex-1 flex flex-col h-screen overflow-hidden">
-                <main className="flex-1 overflow-y-auto p-4 md:p-8 pb-32">
-                    {activeView === 'SHIFT' ? (
-                        <>
-                            {/* Shift Report Content */}
-                            {!hasOpenShift && step !== 4 ? (
-                                <div className="flex h-full items-center justify-center text-[var(--text-muted)] pt-20">
-                                    <div className="text-center">
-                                        <AlertTriangle size={48} className="mx-auto mb-4 opacity-50" />
-                                        <h2 className="text-xl font-bold">Tidak ada Shift Aktif</h2>
-                                        <p>Buka shift baru dari Dashboard untuk memulai laporan.</p>
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="max-w-3xl mx-auto">
-                                    {/* Steps Indicator */}
-                                    {step !== 4 && (
-                                        <div className="flex items-center justify-between mb-8 print:hidden">
-                                            <div className={`flex items-center gap-2 ${step >= 1 ? 'text-[var(--accent-primary)]' : 'text-slate-600'}`}>
-                                                <div className="size-8 rounded-full border-2 flex items-center justify-center font-bold border-current">1</div>
-                                                <span className="font-bold hidden sm:inline">Overview</span>
-                                            </div>
-                                            <div className="h-0.5 flex-1 bg-[var(--bg-elevated)] mx-4"></div>
-                                            <div className={`flex items-center gap-2 ${step >= 2 ? 'text-[var(--accent-secondary)]' : 'text-slate-600'}`}>
-                                                <div className="size-8 rounded-full border-2 flex items-center justify-center font-bold border-current">2</div>
-                                                <span className="font-bold hidden sm:inline">Cash Count</span>
-                                            </div>
-                                            <div className="h-0.5 flex-1 bg-[var(--bg-elevated)] mx-4"></div>
-                                            <div className={`flex items-center gap-2 ${step >= 3 ? 'text-[var(--text-primary)]' : 'text-slate-600'}`}>
-                                                <div className="size-8 rounded-full border-2 flex items-center justify-center font-bold border-current">3</div>
-                                                <span className="font-bold hidden sm:inline">Review</span>
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {/* Step Content */}
-                                    {step === 1 && renderStep1_Overview()}
-                                    {step === 2 && renderStep2_CashCount()}
-                                    {step === 3 && renderStep3_Review()}
-                                    {step === 4 && renderStep4_Success()}
-                                </div>
-                            )}
-                        </>
-                    ) : (
-                        renderTransactions()
-                    )}
-                </main>
-            </div>
+return (
+    <div className="flex min-h-screen bg-[var(--bg-base)]">
+        {/* Sidebar */}
+        <div className="w-64 bg-[var(--bg-surface)] border-r border-[var(--border-default)] p-4 hidden md:block print:hidden">
+            <nav className="space-y-1 mt-4">
+                <button
+                    onClick={() => setActiveView('SHIFT')}
+                    className={`w-full text-left p-3 rounded-lg flex items-center gap-3 transition-colors ${activeView === 'SHIFT'
+                        ? 'bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] font-bold border border-[var(--accent-primary)]/20'
+                        : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated)]'
+                        }`}
+                >
+                    <FileText size={18} />
+                    Laporan Shift
+                </button>
+                <button
+                    onClick={() => setActiveView('TRANSACTIONS')}
+                    className={`w-full text-left p-3 rounded-lg flex items-center gap-3 transition-colors ${activeView === 'TRANSACTIONS'
+                        ? 'bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] font-bold border border-[var(--accent-primary)]/20'
+                        : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated)]'
+                        }`}
+                >
+                    <History size={18} />
+                    Riwayat Transaksi
+                </button>
+            </nav>
         </div>
-    );
+
+        {/* Main Content */}
+        <div className="flex-1 flex flex-col h-screen overflow-hidden">
+            <main className="flex-1 overflow-y-auto p-4 md:p-8 pb-32">
+                {activeView === 'SHIFT' ? (
+                    <>
+                        {/* Shift Report Content */}
+                        {!hasOpenShift && step !== 4 ? (
+                            <div className="flex h-full items-center justify-center text-[var(--text-muted)] pt-20">
+                                <div className="text-center">
+                                    <AlertTriangle size={48} className="mx-auto mb-4 opacity-50" />
+                                    <h2 className="text-xl font-bold">Tidak ada Shift Aktif</h2>
+                                    <p>Buka shift baru dari Dashboard untuk memulai laporan.</p>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="max-w-3xl mx-auto">
+                                {/* Steps Indicator */}
+                                {step !== 4 && (
+                                    <div className="flex items-center justify-between mb-8 print:hidden">
+                                        <div className={`flex items-center gap-2 ${step >= 1 ? 'text-[var(--accent-primary)]' : 'text-slate-600'}`}>
+                                            <div className="size-8 rounded-full border-2 flex items-center justify-center font-bold border-current">1</div>
+                                            <span className="font-bold hidden sm:inline">Overview</span>
+                                        </div>
+                                        <div className="h-0.5 flex-1 bg-[var(--bg-elevated)] mx-4"></div>
+                                        <div className={`flex items-center gap-2 ${step >= 2 ? 'text-[var(--accent-secondary)]' : 'text-slate-600'}`}>
+                                            <div className="size-8 rounded-full border-2 flex items-center justify-center font-bold border-current">2</div>
+                                            <span className="font-bold hidden sm:inline">Cash Count</span>
+                                        </div>
+                                        <div className="h-0.5 flex-1 bg-[var(--bg-elevated)] mx-4"></div>
+                                        <div className={`flex items-center gap-2 ${step >= 3 ? 'text-[var(--text-primary)]' : 'text-slate-600'}`}>
+                                            <div className="size-8 rounded-full border-2 flex items-center justify-center font-bold border-current">3</div>
+                                            <span className="font-bold hidden sm:inline">Review</span>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Step Content */}
+                                {step === 1 && renderStep1_Overview()}
+                                {step === 2 && renderStep2_CashCount()}
+                                {step === 3 && renderStep3_Review()}
+                                {step === 4 && renderStep4_Success()}
+                            </div>
+                        )}
+                    </>
+                ) : (
+                    renderTransactions()
+                )}
+            </main>
+        </div>
+    </div>
+);
 }

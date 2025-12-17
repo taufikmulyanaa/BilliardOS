@@ -55,7 +55,7 @@ function AdjustmentModal({ product, onClose, onSuccess }: { product: any; onClos
                     </button>
                 </div>
                 <form onSubmit={handleSubmit} className="p-5 space-y-4">
-                    <div className="flex items-center gap-3 p-4 rounded-xl" style={{ backgroundColor: 'var(--bg-elevated)' }}>
+                    <div className="flex items-center gap-3 p-4 rounded-lg" style={{ backgroundColor: 'var(--bg-elevated)' }}>
                         <Package className="w-10 h-10" style={{ color: 'var(--text-muted)' }} />
                         <div>
                             <p className="font-medium" style={{ color: 'var(--text-primary)' }}>{product.name}</p>
@@ -101,7 +101,7 @@ function AdjustmentModal({ product, onClose, onSuccess }: { product: any; onClos
                             className="w-full px-3 py-2 rounded-lg resize-none"
                             style={{ backgroundColor: 'var(--bg-elevated)', border: '1px solid var(--border-default)', color: 'var(--text-primary)' }} rows={2} />
                     </div>
-                    <div className="p-4 rounded-xl" style={{ backgroundColor: 'var(--bg-elevated)' }}>
+                    <div className="p-4 rounded-lg" style={{ backgroundColor: 'var(--bg-elevated)' }}>
                         <p className="text-sm mb-1" style={{ color: 'var(--text-muted)' }}>Stok Setelah Adjustment:</p>
                         <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>
                             {adjustType === 'IN' ? product.stockQty + quantity : Math.max(0, product.stockQty - quantity)}
@@ -150,7 +150,7 @@ export default function InventoryControlPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="rounded-xl p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(59, 130, 246, 0.15)' }}>
                             <Package className="w-5 h-5" style={{ color: '#3b82f6' }} />
@@ -161,7 +161,7 @@ export default function InventoryControlPage() {
                         </div>
                     </div>
                 </div>
-                <div className="rounded-xl p-5 cursor-pointer transition-all" onClick={() => setShowLowStock(!showLowStock)}
+                <div className="rounded-lg p-5 cursor-pointer transition-all" onClick={() => setShowLowStock(!showLowStock)}
                     style={{ backgroundColor: 'var(--bg-surface)', border: showLowStock ? '2px solid #f59e0b' : '1px solid var(--border-default)' }}>
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(245, 158, 11, 0.15)' }}>
@@ -173,7 +173,7 @@ export default function InventoryControlPage() {
                         </div>
                     </div>
                 </div>
-                <div className="rounded-xl p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(239, 68, 68, 0.15)' }}>
                             <Package className="w-5 h-5" style={{ color: 'var(--danger)' }} />
@@ -184,7 +184,7 @@ export default function InventoryControlPage() {
                         </div>
                     </div>
                 </div>
-                <div className="rounded-xl p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(180, 229, 13, 0.15)' }}>
                             <CheckCircle className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
@@ -214,7 +214,7 @@ export default function InventoryControlPage() {
                 </select>
             </div>
 
-            <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+            <div className="rounded-lg overflow-hidden" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                 {isLoading ? (
                     <div className="p-8 text-center" style={{ color: 'var(--text-muted)' }}>Memuat data...</div>
                 ) : (

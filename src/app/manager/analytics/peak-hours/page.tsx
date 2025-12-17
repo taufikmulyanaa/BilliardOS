@@ -47,7 +47,7 @@ export default function PeakHoursPage() {
             {/* Peak Hours Summary */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {peakHours.map((peak: any) => (
-                    <div key={peak.time} className="rounded-xl p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                    <div key={peak.time} className="rounded-lg p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                         <div className="flex items-center gap-3 mb-3">
                             <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(180, 229, 13, 0.15)' }}>
                                 <peak.icon className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
@@ -68,7 +68,7 @@ export default function PeakHoursPage() {
             </div>
 
             {/* Heatmap */}
-            <div className="rounded-2xl p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+            <div className="rounded-lg p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                 <div className="flex items-center justify-between mb-6">
                     <h3 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>Heatmap Keramaian</h3>
                     <div className="flex items-center gap-2">
@@ -117,7 +117,7 @@ export default function PeakHoursPage() {
 
             {/* Day Rankings */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="rounded-2xl p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>Hari Tersibuk</h3>
                     <div className="space-y-3">
                         {dayAverages.map((day: any, index: number) => (
@@ -146,24 +146,24 @@ export default function PeakHoursPage() {
                     </div>
                 </div>
 
-                <div className="rounded-2xl p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>Rekomendasi Staffing</h3>
                     <div className="space-y-4">
-                        <div className="p-4 rounded-xl" style={{ backgroundColor: 'rgba(180, 229, 13, 0.1)', border: '1px solid rgba(180, 229, 13, 0.3)' }}>
+                        <div className="p-4 rounded-lg" style={{ backgroundColor: 'rgba(180, 229, 13, 0.1)', border: '1px solid rgba(180, 229, 13, 0.3)' }}>
                             <div className="flex items-center gap-2 mb-2">
                                 <Users className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
                                 <span className="font-medium" style={{ color: 'var(--accent-primary)' }}>Jam Puncak (19:00-22:00)</span>
                             </div>
                             <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Rekomendasikan 3-4 staff aktif untuk melayani peak hours</p>
                         </div>
-                        <div className="p-4 rounded-xl" style={{ backgroundColor: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+                        <div className="p-4 rounded-lg" style={{ backgroundColor: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
                             <div className="flex items-center gap-2 mb-2">
                                 <Users className="w-5 h-5" style={{ color: '#f59e0b' }} />
                                 <span className="font-medium" style={{ color: '#f59e0b' }}>Weekend (Sab-Min)</span>
                             </div>
                             <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Tambahkan 1 extra staff untuk weekend rush</p>
                         </div>
-                        <div className="p-4 rounded-xl" style={{ backgroundColor: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)' }}>
+                        <div className="p-4 rounded-lg" style={{ backgroundColor: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)' }}>
                             <div className="flex items-center gap-2 mb-2">
                                 <TrendingUp className="w-5 h-5" style={{ color: '#3b82f6' }} />
                                 <span className="font-medium" style={{ color: '#3b82f6' }}>Quiet Hours</span>

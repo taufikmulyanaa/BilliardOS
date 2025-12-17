@@ -46,7 +46,7 @@ export default function TablePerformancePage() {
 
             {/* Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="rounded-xl p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(180, 229, 13, 0.15)' }}>
                             <DollarSign className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
@@ -57,7 +57,7 @@ export default function TablePerformancePage() {
                         </div>
                     </div>
                 </div>
-                <div className="rounded-xl p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(59, 130, 246, 0.15)' }}>
                             <Users className="w-5 h-5" style={{ color: '#3b82f6' }} />
@@ -68,7 +68,7 @@ export default function TablePerformancePage() {
                         </div>
                     </div>
                 </div>
-                <div className="rounded-xl p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(139, 92, 246, 0.15)' }}>
                             <TrendingUp className="w-5 h-5" style={{ color: '#8b5cf6' }} />
@@ -79,7 +79,7 @@ export default function TablePerformancePage() {
                         </div>
                     </div>
                 </div>
-                <div className="rounded-xl p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(245, 158, 11, 0.15)' }}>
                             <Clock className="w-5 h-5" style={{ color: '#f59e0b' }} />
@@ -95,7 +95,7 @@ export default function TablePerformancePage() {
             {/* Charts Row */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Revenue per Table */}
-                <div className="rounded-2xl p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>Revenue per Meja</h3>
                     <div className="h-64">
                         <ResponsiveContainer width="100%" height="100%">
@@ -114,7 +114,7 @@ export default function TablePerformancePage() {
                 </div>
 
                 {/* Revenue by Type */}
-                <div className="rounded-2xl p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>Revenue per Tipe</h3>
                     <div className="h-48">
                         <ResponsiveContainer width="100%" height="100%">
@@ -146,7 +146,7 @@ export default function TablePerformancePage() {
             </div>
 
             {/* Table Detail */}
-            <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+            <div className="rounded-lg overflow-hidden" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                 <div className="p-6" style={{ borderBottom: '1px solid var(--border-default)' }}>
                     <h3 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>Detail Performa Meja</h3>
                 </div>

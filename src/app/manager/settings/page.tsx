@@ -74,7 +74,7 @@ export default function SettingsPage() {
                 </button>
             </div>
 
-            <div className="rounded-2xl p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+            <div className="rounded-lg p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                 <div className="flex items-center gap-2 mb-6">
                     <Building className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
                     <h3 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>Informasi Bisnis</h3>
@@ -99,7 +99,7 @@ export default function SettingsPage() {
                 </div>
             </div>
 
-            <div className="rounded-2xl p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+            <div className="rounded-lg p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                 <div className="flex items-center gap-2 mb-6">
                     <Clock className="w-5 h-5" style={{ color: '#3b82f6' }} />
                     <h3 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>Jam Operasional</h3>
@@ -116,7 +116,7 @@ export default function SettingsPage() {
                 </div>
             </div>
 
-            <div className="rounded-2xl p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+            <div className="rounded-lg p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                 <div className="flex items-center gap-2 mb-6">
                     <DollarSign className="w-5 h-5" style={{ color: '#f59e0b' }} />
                     <h3 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>Pengaturan Pajak</h3>
@@ -130,7 +130,7 @@ export default function SettingsPage() {
                 </div>
             </div>
 
-            <div className="rounded-2xl p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+            <div className="rounded-lg p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                 <div className="flex items-center gap-2 mb-6">
                     <Printer className="w-5 h-5" style={{ color: '#8b5cf6' }} />
                     <h3 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>Pengaturan Struk</h3>
@@ -147,7 +147,7 @@ export default function SettingsPage() {
                 </div>
             </div>
 
-            <div className="rounded-2xl p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+            <div className="rounded-lg p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                 <div className="flex items-center gap-2 mb-6">
                     <FileText className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
                     <h3 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>Export Data</h3>

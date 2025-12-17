@@ -62,7 +62,7 @@ export default function PricingManagementPage() {
                     const avgRate = typeTables.reduce((sum: number, t: any) => sum + Number(t.hourlyRate), 0) / typeTables.length;
                     const typeStyle = getTypeColor(type);
                     return (
-                        <div key={type} className="rounded-xl p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                        <div key={type} className="rounded-lg p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                             <div className="flex items-center justify-between mb-3">
                                 <span className="px-2.5 py-1 rounded-full text-xs font-medium" style={{ backgroundColor: typeStyle.bg, color: typeStyle.color }}>{type}</span>
                                 <Tag className="w-5 h-5" style={{ color: 'var(--text-muted)' }} />
@@ -74,7 +74,7 @@ export default function PricingManagementPage() {
                 })}
             </div>
 
-            <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+            <div className="rounded-lg overflow-hidden" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                 {isLoading ? (
                     <div className="p-8 text-center" style={{ color: 'var(--text-muted)' }}>Memuat data...</div>
                 ) : (
@@ -96,7 +96,7 @@ export default function PricingManagementPage() {
                                         <tr key={table.id} className="hover:bg-[var(--bg-elevated)]" style={{ borderBottom: '1px solid var(--border-default)' }}>
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="w-10 h-10 rounded-xl flex items-center justify-center font-bold" style={{ background: 'linear-gradient(to bottom-right, var(--accent-primary), var(--accent-secondary))', color: 'var(--text-inverse)' }}>
+                                                    <div className="w-10 h-10 rounded-lg flex items-center justify-center font-bold" style={{ background: 'linear-gradient(to bottom-right, var(--accent-primary), var(--accent-secondary))', color: 'var(--text-inverse)' }}>
                                                         {table.name.charAt(0)}
                                                     </div>
                                                     <span className="font-medium" style={{ color: 'var(--text-primary)' }}>{table.name}</span>
@@ -150,7 +150,7 @@ export default function PricingManagementPage() {
                 )}
             </div>
 
-            <div className="rounded-2xl p-6" style={{ background: 'linear-gradient(to right, var(--accent-primary), var(--accent-secondary))' }}>
+            <div className="rounded-lg p-6" style={{ background: 'linear-gradient(to right, var(--accent-primary), var(--accent-secondary))' }}>
                 <div className="flex items-center justify-between">
                     <div>
                         <h3 className="text-lg font-semibold mb-1" style={{ color: 'var(--text-inverse)' }}>🎉 Promo & Happy Hour</h3>

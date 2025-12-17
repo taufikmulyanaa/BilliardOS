@@ -63,7 +63,7 @@ export default function RevenueAnalyticsPage() {
 
             {/* Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="rounded-xl p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <div className="flex items-center justify-between mb-3">
                         <span className="text-sm" style={{ color: 'var(--text-muted)' }}>Total Pendapatan</span>
                         <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(180, 229, 13, 0.15)' }}>
@@ -76,7 +76,7 @@ export default function RevenueAnalyticsPage() {
                         <span>{isUp ? '+' : ''}{stats.todayRevenueChange}% vs periode lalu</span>
                     </div>
                 </div>
-                <div className="rounded-xl p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <div className="flex items-center justify-between mb-3">
                         <span className="text-sm" style={{ color: 'var(--text-muted)' }}>Rata-rata Harian</span>
                         <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(59, 130, 246, 0.15)' }}>
@@ -86,7 +86,7 @@ export default function RevenueAnalyticsPage() {
                     <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{formatCurrency(avgDaily)}</p>
                     <p className="text-sm mt-2" style={{ color: 'var(--text-muted)' }}>{revenueData.length} hari data</p>
                 </div>
-                <div className="rounded-xl p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <div className="flex items-center justify-between mb-3">
                         <span className="text-sm" style={{ color: 'var(--text-muted)' }}>Pendapatan Meja</span>
                         <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(139, 92, 246, 0.15)' }}>
@@ -100,7 +100,7 @@ export default function RevenueAnalyticsPage() {
                         {categoryData.find((c: any) => c.name === 'Jam Main')?.value || 0}% dari total
                     </p>
                 </div>
-                <div className="rounded-xl p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <div className="flex items-center justify-between mb-3">
                         <span className="text-sm" style={{ color: 'var(--text-muted)' }}>Pendapatan F&B</span>
                         <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(245, 158, 11, 0.15)' }}>
@@ -119,7 +119,7 @@ export default function RevenueAnalyticsPage() {
             {/* Charts Row */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Revenue Trend */}
-                <div className="lg:col-span-2 rounded-2xl p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="lg:col-span-2 rounded-lg p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>Trend Pendapatan</h3>
                     <div className="h-72">
                         <ResponsiveContainer width="100%" height="100%">
@@ -144,7 +144,7 @@ export default function RevenueAnalyticsPage() {
                 </div>
 
                 {/* Category Breakdown */}
-                <div className="rounded-2xl p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>Komposisi Pendapatan</h3>
                     <div className="h-48">
                         <ResponsiveContainer width="100%" height="100%">
@@ -176,7 +176,7 @@ export default function RevenueAnalyticsPage() {
             </div>
 
             {/* Comparison Bar Chart */}
-            <div className="rounded-2xl p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+            <div className="rounded-lg p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                 <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>Perbandingan Meja vs F&B</h3>
                 <div className="h-64">
                     <ResponsiveContainer width="100%" height="100%">

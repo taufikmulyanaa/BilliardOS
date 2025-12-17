@@ -227,7 +227,7 @@ export default function ManagerDashboard() {
                                     paddingAngle={5}
                                     dataKey="value"
                                 >
-                                    {revenueByCategory.map((entry, index) => (
+                                    {revenueByCategory.map((entry: any, index: number) => (
                                         <Cell key={`cell-${index}`} fill={entry.color} />
                                     ))}
                                 </Pie>
@@ -244,7 +244,7 @@ export default function ManagerDashboard() {
                         </ResponsiveContainer>
                     </div>
                     <div className="space-y-2 mt-4">
-                        {revenueByCategory.map((item) => (
+                        {revenueByCategory.map((item: any) => (
                             <div key={item.name} className="flex items-center justify-between text-sm">
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
@@ -289,28 +289,28 @@ export default function ManagerDashboard() {
                 }}>
                     <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>Statistik Cepat</h3>
                     <div className="grid grid-cols-2 gap-4">
-                        <div className="p-4 rounded-xl" style={{ backgroundColor: 'var(--bg-elevated)' }}>
+                        <div className="p-4 rounded-lg" style={{ backgroundColor: 'var(--bg-elevated)' }}>
                             <div className="flex items-center gap-2 mb-2">
                                 <Package className="w-5 h-5" style={{ color: '#3b82f6' }} />
                                 <span className="text-sm" style={{ color: 'var(--text-muted)' }}>Produk Aktif</span>
                             </div>
                             <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>52</p>
                         </div>
-                        <div className="p-4 rounded-xl" style={{ backgroundColor: 'var(--bg-elevated)' }}>
+                        <div className="p-4 rounded-lg" style={{ backgroundColor: 'var(--bg-elevated)' }}>
                             <div className="flex items-center gap-2 mb-2">
                                 <Calendar className="w-5 h-5" style={{ color: '#8b5cf6' }} />
                                 <span className="text-sm" style={{ color: 'var(--text-muted)' }}>Reservasi Hari Ini</span>
                             </div>
                             <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>8</p>
                         </div>
-                        <div className="p-4 rounded-xl" style={{ backgroundColor: 'var(--bg-elevated)' }}>
+                        <div className="p-4 rounded-lg" style={{ backgroundColor: 'var(--bg-elevated)' }}>
                             <div className="flex items-center gap-2 mb-2">
                                 <TrendingUp className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
                                 <span className="text-sm" style={{ color: 'var(--text-muted)' }}>Revenue Bulan Ini</span>
                             </div>
                             <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>Rp 125jt</p>
                         </div>
-                        <div className="p-4 rounded-xl" style={{ backgroundColor: 'var(--bg-elevated)' }}>
+                        <div className="p-4 rounded-lg" style={{ backgroundColor: 'var(--bg-elevated)' }}>
                             <div className="flex items-center gap-2 mb-2">
                                 <Users className="w-5 h-5" style={{ color: '#f59e0b' }} />
                                 <span className="text-sm" style={{ color: 'var(--text-muted)' }}>Staff Aktif</span>

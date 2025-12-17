@@ -20,7 +20,7 @@ function ShiftDetailModal({ shift, onClose }: { shift: any; onClose: () => void 
                     <button onClick={onClose} className="p-2 rounded-lg hover:bg-[var(--bg-elevated)]"><X className="w-5 h-5" style={{ color: 'var(--text-muted)' }} /></button>
                 </div>
                 <div className="p-5 space-y-4">
-                    <div className="flex items-center gap-3 p-4 rounded-xl" style={{ backgroundColor: 'var(--bg-elevated)' }}>
+                    <div className="flex items-center gap-3 p-4 rounded-lg" style={{ backgroundColor: 'var(--bg-elevated)' }}>
                         <div className="w-12 h-12 rounded-full flex items-center justify-center font-semibold text-lg" style={{ background: 'linear-gradient(to bottom-right, var(--accent-primary), var(--accent-secondary))', color: 'var(--text-inverse)' }}>{shift.staff?.fullName?.charAt(0) || 'S'}</div>
                         <div>
                             <p className="font-medium" style={{ color: 'var(--text-primary)' }}>{shift.staff?.fullName || 'Unknown'}</p>
@@ -28,11 +28,11 @@ function ShiftDetailModal({ shift, onClose }: { shift: any; onClose: () => void 
                         </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
-                        <div className="p-4 rounded-xl" style={{ backgroundColor: 'var(--bg-elevated)' }}>
+                        <div className="p-4 rounded-lg" style={{ backgroundColor: 'var(--bg-elevated)' }}>
                             <p className="text-sm mb-1" style={{ color: 'var(--text-muted)' }}>Waktu Buka</p>
                             <p className="font-medium" style={{ color: 'var(--text-primary)' }}>{formatDateTime(shift.openedAt)}</p>
                         </div>
-                        <div className="p-4 rounded-xl" style={{ backgroundColor: 'var(--bg-elevated)' }}>
+                        <div className="p-4 rounded-lg" style={{ backgroundColor: 'var(--bg-elevated)' }}>
                             <p className="text-sm mb-1" style={{ color: 'var(--text-muted)' }}>Waktu Tutup</p>
                             <p className="font-medium" style={{ color: 'var(--text-primary)' }}>{shift.closedAt ? formatDateTime(shift.closedAt) : 'Masih Aktif'}</p>
                         </div>
@@ -50,7 +50,7 @@ function ShiftDetailModal({ shift, onClose }: { shift: any; onClose: () => void 
                         </div>
                     </div>
                     {shift.varianceReason && (
-                        <div className="p-4 rounded-xl" style={{ backgroundColor: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+                        <div className="p-4 rounded-lg" style={{ backgroundColor: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
                             <p className="text-sm font-medium mb-1" style={{ color: '#f59e0b' }}>Alasan Variance:</p>
                             <p style={{ color: 'var(--text-secondary)' }}>{shift.varianceReason}</p>
                         </div>
@@ -86,19 +86,19 @@ export default function ShiftReportsPage() {
     return (
         <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="rounded-xl p-4" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-4" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(59, 130, 246, 0.15)' }}><Calendar className="w-5 h-5" style={{ color: '#3b82f6' }} /></div>
                         <div><p className="text-sm" style={{ color: 'var(--text-muted)' }}>Total Shift</p><p className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>{totalShifts}</p></div>
                     </div>
                 </div>
-                <div className="rounded-xl p-4" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-4" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(180, 229, 13, 0.15)' }}><Clock className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} /></div>
                         <div><p className="text-sm" style={{ color: 'var(--text-muted)' }}>Shift Aktif</p><p className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>{openShifts}</p></div>
                     </div>
                 </div>
-                <div className="rounded-xl p-4" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-4" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: totalVariance >= 0 ? 'rgba(180, 229, 13, 0.15)' : 'rgba(239, 68, 68, 0.15)' }}>
                             <DollarSign className="w-5 h-5" style={{ color: totalVariance >= 0 ? 'var(--accent-primary)' : 'var(--danger)' }} />
@@ -106,7 +106,7 @@ export default function ShiftReportsPage() {
                         <div><p className="text-sm" style={{ color: 'var(--text-muted)' }}>Total Variance</p><p className="text-xl font-bold" style={{ color: totalVariance >= 0 ? 'var(--accent-primary)' : 'var(--danger)' }}>{totalVariance >= 0 ? '+' : ''}{formatCurrency(totalVariance)}</p></div>
                     </div>
                 </div>
-                <div className="rounded-xl p-4" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-4" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(245, 158, 11, 0.15)' }}><AlertTriangle className="w-5 h-5" style={{ color: '#f59e0b' }} /></div>
                         <div><p className="text-sm" style={{ color: 'var(--text-muted)' }}>Perlu Review</p><p className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>{flaggedShifts}</p></div>
@@ -126,7 +126,7 @@ export default function ShiftReportsPage() {
                     style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)', color: 'var(--text-primary)' }} />
             </div>
 
-            <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+            <div className="rounded-lg overflow-hidden" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                 {isLoading ? (<div className="p-8 text-center" style={{ color: 'var(--text-muted)' }}>Memuat data...</div>) : (
                     <div className="overflow-x-auto">
                         <table className="w-full">

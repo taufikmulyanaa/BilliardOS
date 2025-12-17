@@ -42,7 +42,7 @@ export default function MemberAnalyticsPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="rounded-xl p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(59, 130, 246, 0.15)' }}>
                             <Users className="w-5 h-5" style={{ color: '#3b82f6' }} />
@@ -53,7 +53,7 @@ export default function MemberAnalyticsPage() {
                         </div>
                     </div>
                 </div>
-                <div className="rounded-xl p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(180, 229, 13, 0.15)' }}>
                             <UserPlus className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
@@ -64,7 +64,7 @@ export default function MemberAnalyticsPage() {
                         </div>
                     </div>
                 </div>
-                <div className="rounded-xl p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(139, 92, 246, 0.15)' }}>
                             <Star className="w-5 h-5" style={{ color: '#8b5cf6' }} />
@@ -75,7 +75,7 @@ export default function MemberAnalyticsPage() {
                         </div>
                     </div>
                 </div>
-                <div className="rounded-xl p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-5" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(245, 158, 11, 0.15)' }}>
                             <Wallet className="w-5 h-5" style={{ color: '#f59e0b' }} />
@@ -89,7 +89,7 @@ export default function MemberAnalyticsPage() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="rounded-2xl p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>Distribusi Tier</h3>
                     <div className="flex items-center gap-6">
                         <div className="h-48 w-48">
@@ -119,7 +119,7 @@ export default function MemberAnalyticsPage() {
                     </div>
                 </div>
 
-                <div className="rounded-2xl p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+                <div className="rounded-lg p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                     <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>Pertumbuhan Member</h3>
                     <div className="h-56">
                         <ResponsiveContainer width="100%" height="100%">
@@ -135,14 +135,14 @@ export default function MemberAnalyticsPage() {
                 </div>
             </div>
 
-            <div className="rounded-2xl p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+            <div className="rounded-lg p-6" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                 <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>Top Spenders</h3>
                     <Award className="w-5 h-5" style={{ color: '#f59e0b' }} />
                 </div>
                 <div className="space-y-3">
                     {topSpenders.map((member: any, index: number) => (
-                        <div key={member.id} className="flex items-center gap-4 p-3 rounded-xl" style={{ backgroundColor: 'var(--bg-elevated)' }}>
+                        <div key={member.id} className="flex items-center gap-4 p-3 rounded-lg" style={{ backgroundColor: 'var(--bg-elevated)' }}>
                             <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" style={{
                                 backgroundColor: index === 0 ? 'rgba(245, 158, 11, 0.15)' : index === 1 ? 'rgba(148, 163, 184, 0.15)' : index === 2 ? 'rgba(217, 119, 6, 0.15)' : 'var(--bg-surface)',
                                 color: index === 0 ? '#f59e0b' : index === 1 ? '#94a3b8' : index === 2 ? '#d97706' : 'var(--text-muted)'

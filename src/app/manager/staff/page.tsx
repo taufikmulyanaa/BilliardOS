@@ -40,7 +40,7 @@ function StaffModal({ staff, onClose, onSuccess }: { staff?: any; onClose: () =>
 
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="rounded-2xl w-full max-w-md shadow-xl" style={{ backgroundColor: 'var(--bg-surface)' }}>
+            <div className="rounded-lg w-full max-w-md shadow-xl" style={{ backgroundColor: 'var(--bg-surface)' }}>
                 <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid var(--border-default)' }}>
                     <h2 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>{staff ? 'Edit Staff' : 'Tambah Staff Baru'}</h2>
                     <button onClick={onClose} className="p-2 rounded-lg hover:bg-[var(--bg-elevated)]"><X className="w-5 h-5" style={{ color: 'var(--text-muted)' }} /></button>
@@ -124,7 +124,7 @@ export default function StaffManagementPage() {
                 </select>
             </div>
 
-            <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+            <div className="rounded-lg overflow-hidden" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
                 {isLoading ? (<div className="p-8 text-center" style={{ color: 'var(--text-muted)' }}>Memuat data...</div>) : (
                     <div className="overflow-x-auto">
                         <table className="w-full">
@@ -169,7 +169,7 @@ export default function StaffManagementPage() {
 
             {showDeleteConfirm && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="rounded-2xl p-6 max-w-sm w-full shadow-xl" style={{ backgroundColor: 'var(--bg-surface)' }}>
+                    <div className="rounded-lg p-6 max-w-sm w-full shadow-xl" style={{ backgroundColor: 'var(--bg-surface)' }}>
                         <h3 className="text-lg font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>Hapus Staff?</h3>
                         <p className="mb-6" style={{ color: 'var(--text-muted)' }}>Aksi ini tidak dapat dibatalkan. Staff akan dihapus permanen.</p>
                         <div className="flex gap-3">

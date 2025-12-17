@@ -1007,19 +1007,19 @@ export default function DashboardPage() {
                     <div className="flex gap-2">
                         <button
                             onClick={() => setViewMode('grid')}
-                            className={`flex items-center gap-2 border px-3 py-2 rounded text-sm font-medium transition-colors
+                            className={`flex items-center gap-2 border h-8 px-3 rounded text-xs font-medium transition-colors
                                     ${viewMode === 'grid' ? 'bg-[var(--bg-card)] text-[var(--text-primary)] border-[var(--accent-primary)]/50' : 'bg-transparent text-[var(--text-muted)] border-[var(--border-default)] hover:bg-[var(--bg-card)]'}
                                 `}
                         >
-                            <LayoutGrid size={16} /> Grid View
+                            <LayoutGrid size={14} /> Grid View
                         </button>
                         <button
                             onClick={() => setViewMode('list')}
-                            className={`flex items-center gap-2 border px-3 py-2 rounded text-sm font-medium transition-colors
+                            className={`flex items-center gap-2 border h-8 px-3 rounded text-xs font-medium transition-colors
                                     ${viewMode === 'list' ? 'bg-[var(--bg-card)] text-[var(--text-primary)] border-[var(--accent-primary)]/50' : 'bg-transparent text-[var(--text-muted)] border-[var(--border-default)] hover:bg-[var(--bg-card)]'}
                                 `}
                         >
-                            <List size={16} /> List View
+                            <List size={14} /> List View
                         </button>
                     </div>
                 </div>
@@ -1263,9 +1263,9 @@ export default function DashboardPage() {
                                     className="flex flex-col items-center justify-center p-3 bg-[var(--bg-card)] hover:bg-[var(--bg-elevated)] border border-[var(--border-default)] rounded transition-colors group disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {isActionLoading ? (
-                                        <RefreshCw size={24} className="text-[var(--accent-primary)] mb-1 animate-spin" />
+                                        <RefreshCw size={20} className="text-[var(--accent-primary)] mb-1 animate-spin" />
                                     ) : (
-                                        <Play size={24} className="text-[var(--accent-primary)] mb-1" />
+                                        <Play size={20} className="text-[var(--accent-primary)] mb-1" />
                                     )}
                                     <span className="text-xs font-medium text-slate-300">Start</span>
                                 </button>
@@ -1284,9 +1284,9 @@ export default function DashboardPage() {
                                     className="flex flex-col items-center justify-center p-3 bg-[var(--bg-card)] hover:bg-[var(--bg-elevated)] border border-[var(--border-default)] rounded transition-colors group disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {isActionLoading ? (
-                                        <RefreshCw size={24} className="text-[var(--accent-secondary)] mb-1 animate-spin" />
+                                        <RefreshCw size={20} className="text-[var(--accent-secondary)] mb-1 animate-spin" />
                                     ) : (
-                                        <Pause size={24} className="text-[var(--accent-secondary)] mb-1" />
+                                        <Pause size={20} className="text-[var(--accent-secondary)] mb-1" />
                                     )}
                                     <span className="text-xs font-medium text-slate-300">
                                         {selectedTable.activeSession?.status === 'PAUSED' ? 'Resume' : 'Pause'}
@@ -1300,7 +1300,7 @@ export default function DashboardPage() {
                                     disabled={selectedTable.status !== 'ACTIVE' || isActionLoading}
                                     className="flex flex-col items-center justify-center p-3 bg-[var(--bg-card)] hover:bg-[var(--bg-elevated)] border border-[var(--border-default)] rounded transition-colors group disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
-                                    <Square size={24} className="text-[#ef4444] mb-1" />
+                                    <Square size={20} className="text-[#ef4444] mb-1" />
                                     <span className="text-xs font-medium text-slate-300">Stop</span>
 
                                 </button>
@@ -1331,9 +1331,9 @@ export default function DashboardPage() {
                             <button
                                 onClick={() => setShowCheckout(true)}
                                 disabled={selectedTable.status !== 'ACTIVE'}
-                                className="w-full mb-6 py-3 bg-[var(--accent-secondary)] hover:bg-yellow-500 text-black font-bold rounded-lg shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
+                                className="w-full mb-6 h-10 bg-[var(--accent-secondary)] hover:bg-yellow-500 text-black font-bold rounded-lg shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 text-sm"
                             >
-                                <Receipt size={20} />
+                                <Receipt size={18} />
                                 Checkout & Bayar
                             </button>
 

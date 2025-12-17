@@ -235,7 +235,7 @@ export default function POSPage() {
                             <button
                                 key={cat}
                                 onClick={() => setActiveCategory(cat)}
-                                className={`px-4 py-1.5 text-sm font-medium rounded transition-all flex items-center gap-2
+                                className={`h-8 px-3 text-xs font-medium rounded transition-all flex items-center gap-2
                       ${activeCategory === cat ? 'bg-[var(--accent-primary)] text-black shadow-sm' : 'text-[var(--text-muted)] hover:text-white hover:bg-[var(--bg-surface)]'}
                     `}
                             >
@@ -253,7 +253,7 @@ export default function POSPage() {
                         <input
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-full py-2 pl-10 pr-4 text-sm text-white focus:ring-1 focus:ring-[var(--accent-primary)] focus:border-[var(--accent-primary)] placeholder:text-[var(--text-muted)] outline-none transition-all"
+                            className="w-full bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-full h-8 pl-10 pr-4 text-xs text-white focus:ring-1 focus:ring-[var(--accent-primary)] focus:border-[var(--accent-primary)] placeholder:text-[var(--text-muted)] outline-none transition-all"
                             placeholder="Cari menu..."
                         />
                     </div>
@@ -268,9 +268,9 @@ export default function POSPage() {
                                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                         <button
                                             onClick={() => addToCart(item)}
-                                            className="bg-[var(--accent-primary)] text-black font-bold py-2 px-6 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-all flex items-center gap-2"
+                                            className="bg-[var(--accent-primary)] text-black font-bold h-8 px-4 text-xs rounded-full transform translate-y-4 group-hover:translate-y-0 transition-all flex items-center gap-2"
                                         >
-                                            <Plus size={18} /> Tambah
+                                            <Plus size={14} /> Tambah
                                         </button>
                                     </div>
                                 </div>
@@ -281,7 +281,7 @@ export default function POSPage() {
                                     <p className="text-xs text-[var(--text-muted)] mb-3 line-clamp-2 min-h-[2.5em]">{item.description || 'Menu favorit pelanggan.'}</p>
                                     <div className="mt-auto flex items-center justify-between">
                                         <span className="text-[var(--accent-primary)] font-bold text-lg">Rp {Number(item.price).toLocaleString()}</span>
-                                        <button onClick={() => addToCart(item)} className="p-2 bg-[var(--bg-surface)] rounded-full text-[var(--accent-primary)] hover:bg-[var(--accent-primary)] hover:text-black transition-colors border border-[var(--border-default)]">
+                                        <button onClick={() => addToCart(item)} className="size-8 flex items-center justify-center bg-[var(--bg-surface)] rounded-full text-[var(--accent-primary)] hover:bg-[var(--accent-primary)] hover:text-black transition-colors border border-[var(--border-default)]">
                                             <Plus size={16} />
                                         </button>
                                     </div>
@@ -348,7 +348,7 @@ export default function POSPage() {
 
                     <div className="flex gap-2">
                         <button
-                            className="flex-1 py-3 bg-[var(--border-default)] text-[var(--text-secondary)] hover:text-white border border-[var(--accent-primary)]/30 hover:bg-[var(--accent-primary)]/20 rounded font-bold transition-all"
+                            className="flex-1 h-10 bg-[var(--border-default)] text-[var(--text-secondary)] hover:text-white border border-[var(--accent-primary)]/30 hover:bg-[var(--accent-primary)]/20 rounded font-bold transition-all text-sm"
                             onClick={() => setCart([])}
                         >
                             Batal
@@ -356,7 +356,7 @@ export default function POSPage() {
                         <button
                             disabled={cart.length === 0}
                             onClick={() => setShowOptions(true)}
-                            className="flex-[2] py-3 bg-[var(--accent-primary)] hover:bg-[var(--accent-secondary)] disabled:bg-[var(--bg-elevated)] disabled:text-[var(--text-muted)] text-black font-bold rounded shadow-lg shadow-[var(--accent-primary)]/20 transition-all active:scale-95"
+                            className="flex-[2] h-10 bg-[var(--accent-primary)] hover:bg-[var(--accent-secondary)] disabled:bg-[var(--bg-elevated)] disabled:text-[var(--text-muted)] text-black font-bold rounded shadow-lg shadow-[var(--accent-primary)]/20 transition-all active:scale-95 text-sm"
                         >
                             Proses Pesanan
                         </button>

@@ -731,8 +731,9 @@ const WalkinModal = ({ tables, onClose, onSuccess }: { tables: any[], onClose: (
                 </div>
                 <form onSubmit={handleSubmit} className="p-4 space-y-4">
                     <div>
-                        <label className="text-xs text-[var(--text-muted)] uppercase font-bold block mb-1">Nama Customer</label>
-                        <input type="text" value={customerName} onChange={e => setCustomerName(e.target.value)} required
+                        <label className="text-xs text-[var(--text-muted)] uppercase font-bold block mb-1">Nama Customer (Opsional)</label>
+                        <input type="text" value={customerName} onChange={e => setCustomerName(e.target.value)}
+                            placeholder="Guest"
                             className="w-full bg-[var(--bg-base)] border border-[var(--border-default)] rounded p-2 text-[var(--text-primary)]" />
                     </div>
                     <div className="grid grid-cols-2 gap-4">

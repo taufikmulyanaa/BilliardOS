@@ -25,7 +25,17 @@ export async function GET() {
                     },
                     take: 1,
                     include: {
-                        member: { select: { fullName: true, memberCode: true } },
+                        member: {
+                            select: {
+                                id: true,
+                                fullName: true,
+                                memberCode: true,
+                                pointsBalance: true,
+                                walletBalance: true,
+                                tier: true,
+                                phone: true
+                            }
+                        },
                         orders: {
                             include: { items: true }
                         }

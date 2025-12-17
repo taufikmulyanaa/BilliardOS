@@ -1,8 +1,7 @@
 'use client';
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import {
-    X, Clock, Coffee, Plus, Minus, Banknote, QrCode, CreditCard,
-    Printer, Trash2, Tag, Star, FileText, Loader2
+    Printer, Trash2, Tag, Star, FileText, Loader2, Wallet, Banknote, QrCode, CreditCard, Plus, X, Minus, Clock, Coffee
 } from 'lucide-react';
 
 interface CheckoutModalProps {
@@ -450,22 +449,30 @@ export const CheckoutModal = ({ table, onClose, onConfirm }: CheckoutModalProps)
                                             {[
                                                 { method: 'CASH', icon: Banknote, color: 'text-[var(--accent-primary)]' },
                                                 { method: 'QRIS', icon: QrCode, color: 'text-[#3b82f6]' },
-                                                { method: 'DEBIT', icon: CreditCard, color: 'text-[#a855f7]' }
+                                                { method: 'DEBIT', icon: CreditCard, color: 'text-[#a855f7]' },
+                                                { method: 'DEPOSIT', icon: Wallet, color: 'text-[#f59e0b]' }
                                             ].map(({ method, icon: Icon, color }) => (
                                                 <button key={method} onClick={() => updatePayment(index, 'method', method)}
-                                                    className={`p-3 rounded border flex flex-col items-center gap-1 transition-all ${payment.method === method ? 'bg-[var(--accent-primary)]/10 border-[var(--accent-primary)]' : 'border-[var(--border-default)] hover:border-[var(--accent-primary)]/50'}`}>
+                                                    disabled={method === 'DEPOSIT' && (!member || Number(member.walletBalance) < grandTotal)}
+                                                    className={`p-3 rounded border flex flex-col items-center gap-1 transition-all ${payment.method === method ? 'bg-[var(--accent-primary)]/10 border-[var(--accent-primary)]' : 'border-[var(--border-default)] hover:border-[var(--accent-primary)]/50'} ${method === 'DEPOSIT' && (!member || Number(member.walletBalance) < grandTotal) ? 'opacity-50 cursor-not-allowed grayscale' : ''}`}>
                                                     <Icon size={20} className={payment.method === method ? 'text-[var(--accent-primary)]' : color} />
                                                     <span className={`text-[10px] font-bold ${payment.method === method ? 'text-[var(--accent-primary)]' : 'text-[var(--text-muted)]'}`}>{method}</span>
                                                 </button>
                                             ))}
                                         </div>
 
-                                        {/* QRIS QR Code */}
-                                        {payment.method === 'QRIS' && (
-                                            <div className="bg-white rounded p-4 mb-3 flex flex-col items-center">
-                                                <div className="bg-black/10 p-4 rounded"><QrCode size={80} className="text-black" /></div>
-                                                <p className="text-xs text-gray-600 mt-2">Scan untuk membayar</p>
-                                                <p className="text-lg font-bold text-black">Rp {(index === 0 ? grandTotal : remainingAmount).toLocaleString()}</p>
+
+
+                                        {/* DEPOSIT Info */}
+                                        {payment.method === 'DEPOSIT' && (
+                                            <div className="bg-[var(--bg-elevated)] rounded p-3 mb-3 border border-dashed border-[var(--accent-secondary)]">
+                                                <div className="flex justify-between items-center mb-1">
+                                                    <span className="text-xs text-[var(--accent-secondary)]">Wallet Balance</span>
+                                                    <span className="font-bold text-[var(--text-primary)]">Rp {Number(member?.walletBalance || 0).toLocaleString()}</span>
+                                                </div>
+                                                {Number(member?.walletBalance || 0) < payment.amount && (
+                                                    <p className="text-[10px] text-red-500 mt-1">Saldo tidak mencukupi!</p>
+                                                )}
                                             </div>
                                         )}
 

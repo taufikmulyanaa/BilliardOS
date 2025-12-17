@@ -14,7 +14,7 @@ const transactionSchema = z.object({
     memberId: z.number().optional().nullable(),
     customerName: z.string().optional().nullable(),
     sessionId: z.number().optional().nullable(),
-    paymentMethod: z.enum(['CASH', 'QRIS', 'DEBIT', 'CREDIT']),
+    paymentMethod: z.enum(['CASH', 'QRIS', 'DEBIT', 'CREDIT', 'DEPOSIT']),
     items: z.array(itemSchema),
     pointsRedeemed: z.number().optional(),
 });
@@ -38,6 +38,21 @@ export async function POST(request: Request) {
                 return NextResponse.json({ error: "Insufficient points" }, { status: 400 });
             }
             discountAmount = pointsRedeemed * 1000;
+        }
+
+        // Check Wallet Balance for DEPOSIT
+        if (paymentMethod === 'DEPOSIT') {
+            if (!memberId) {
+                return NextResponse.json({ error: "Member required for Deposit payment" }, { status: 400 });
+            }
+            const member = await prisma.member.findUnique({ where: { id: memberId } });
+            if (!member) return NextResponse.json({ error: "Member not found" }, { status: 404 });
+
+            // Calculate total first needed for check
+            const estimatedTotal = Math.max(0, subtotal - discountAmount) + Math.round(Math.max(0, subtotal - discountAmount) * 0.11);
+            if (Number(member.walletBalance) < estimatedTotal) {
+                return NextResponse.json({ error: `Insufficient Wallet Balance (Current: ${Number(member.walletBalance).toLocaleString()})` }, { status: 400 });
+            }
         }
 
         const taxRate = 0.11;
@@ -129,6 +144,24 @@ export async function POST(request: Request) {
                     })
                 );
             }
+        }
+
+        // 4. Handle DEPOSIT Payment (Deduct Balance)
+        if (paymentMethod === 'DEPOSIT' && memberId) {
+            operations.push(
+                prisma.member.update({
+                    where: { id: memberId },
+                    data: { walletBalance: { decrement: totalAmount } }
+                }),
+                prisma.walletTransaction.create({
+                    data: {
+                        memberId,
+                        type: 'USAGE',
+                        amount: totalAmount, // Negative logic or positive? Usually usage is negative, but type USAGE implies it. Let's store absolute amount for type USAGE and handle sign in display or store signed. Schema says Decimal. Let's keep it positive magnitude, type determines sign.
+                        description: `Payment for Invoice ${invoiceNo}`
+                    }
+                })
+            );
         }
 
         // Execute All Operations in Transaction

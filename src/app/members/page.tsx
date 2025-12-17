@@ -11,6 +11,79 @@ import {
 
 const fetcher = (url: string) => fetch(url).then(r => r.json());
 
+// Top Up Modal
+const TopUpModal = ({ member, onClose, onSuccess }: { member: any, onClose: () => void, onSuccess: () => void }) => {
+    const [amount, setAmount] = useState(50000);
+    const [paymentMethod, setPaymentMethod] = useState('CASH');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        try {
+            const res = await fetch(`/api/members/${member.id}/topup`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ amount, paymentMethod })
+            });
+            const data = await res.json();
+            if (!data.success) throw new Error(data.error);
+            onSuccess();
+            onClose();
+        } catch (error: any) {
+            alert(error.message || 'Top Up Failed');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    return (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-xl w-full max-w-sm overflow-hidden">
+                <div className="p-4 border-b border-[var(--border-default)] bg-[var(--bg-card)] flex justify-between items-center">
+                    <h3 className="text-lg font-bold text-[var(--text-primary)]">Top Up Saldo</h3>
+                    <button onClick={onClose} className="text-[var(--text-muted)] hover:text-[var(--text-primary)]"><X size={20} /></button>
+                </div>
+                <form onSubmit={handleSubmit} className="p-6 space-y-4">
+                    <div className="text-center mb-4">
+                        <div className="text-sm text-[var(--text-muted)]">Top Up untuk</div>
+                        <div className="font-bold text-[var(--text-primary)] text-lg">{member.fullName}</div>
+                        <div className="text-xs text-[var(--text-muted)] font-mono">{member.memberCode}</div>
+                    </div>
+                    <div>
+                        <label className="text-xs text-[var(--text-muted)] uppercase font-bold block mb-1">Nominal Top Up</label>
+                        <div className="grid grid-cols-2 gap-2 mb-2">
+                            {[10000, 20000, 50000, 100000].map(v => (
+                                <button type="button" key={v} onClick={() => setAmount(v)}
+                                    className={`p-2 rounded text-xs border ${amount === v ? 'bg-[var(--accent-primary)]/10 border-[var(--accent-primary)] text-[var(--accent-primary)]' : 'border-[var(--border-default)] text-[var(--text-muted)]'}`}>
+                                    {v.toLocaleString()}
+                                </button>
+                            ))}
+                        </div>
+                        <div className="relative">
+                            <span className="absolute left-3 top-2.5 text-[var(--text-muted)] text-sm">Rp</span>
+                            <input type="number" min="1000" step="1000" value={amount} onChange={e => setAmount(Number(e.target.value))}
+                                className="w-full bg-[var(--bg-base)] border border-[var(--border-default)] rounded p-2 pl-10 text-[var(--text-primary)] text-sm focus:border-[var(--accent-primary)] outline-none font-bold" />
+                        </div>
+                    </div>
+                    <div>
+                        <label className="text-xs text-[var(--text-muted)] uppercase font-bold block mb-1">Metode Bayar</label>
+                        <select value={paymentMethod} onChange={e => setPaymentMethod(e.target.value)}
+                            className="w-full bg-[var(--bg-base)] border border-[var(--border-default)] rounded p-2 text-[var(--text-primary)] text-sm focus:border-[var(--accent-primary)] outline-none">
+                            <option value="CASH">Cash</option>
+                            <option value="QRIS">QRIS</option>
+                            <option value="DEBIT">Debit</option>
+                        </select>
+                    </div>
+                    <button type="submit" disabled={isSubmitting} className="w-full py-3 bg-[var(--accent-primary)] hover:bg-[#16a34a] text-black font-bold rounded mt-2 disabled:opacity-50">
+                        {isSubmitting ? 'Processing...' : 'Konfirmasi Top Up'}
+                    </button>
+                </form>
+            </div>
+        </div>
+    );
+};
+
 // Create/Edit Member Modal
 const MemberModal = ({ member, onClose, onSave }: { member?: any, onClose: () => void, onSave: () => void }) => {
     const isEdit = !!member;
@@ -132,8 +205,11 @@ export default function MembersPage() {
     const [activeTab, setActiveTab] = useState<'history' | 'rewards' | 'settings'>('history');
     const [search, setSearch] = useState('');
     const [showModal, setShowModal] = useState(false);
+
+    // Fixed State Declarations
     const [editingMember, setEditingMember] = useState<any>(null);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [isTopUpOpen, setIsTopUpOpen] = useState(false);
 
     // Fetch Members
     const { data: membersData, mutate } = useSWR(
@@ -148,7 +224,30 @@ export default function MembersPage() {
     );
 
     const members = membersData?.data || [];
-    const selectedMember = memberDetailData?.data || members.find((m: any) => m.id === selectedId) || members[0];
+    // Ensure selectedMember is driven by ID or falls back to first one
+    const memberDetail = memberDetailData?.data || members.find((m: any) => m.id === selectedId) || members[0];
+
+    // Use this for the main content view
+    const displayMember = memberDetail;
+    const selectedMember = displayMember; // Alias for compatibility with rest of code
+
+    const handleEdit = (member: any) => {
+        setEditingMember(member);
+        setShowModal(true);
+    };
+
+    const handleTopUp = (member: any) => {
+        setEditingMember(member); // Reuse editingMember state for topup context or create new
+        setIsTopUpOpen(true);
+    };
+
+    const handleSave = () => {
+        setShowModal(false);
+        setIsTopUpOpen(false);
+        setEditingMember(null);
+        mutate();
+        showToast('success', 'Data member berhasil disimpan');
+    };
 
     // Calculate stats from detailed member data
     const memberStats = selectedMember ? {
@@ -251,11 +350,22 @@ export default function MembersPage() {
                                         {member.tier}
                                     </span>
                                 </div>
-                                <p className="text-xs text-[var(--text-muted)] mb-2">ID: {member.memberCode}</p>
+                                <div className="flex justify-between items-center text-xs text-[var(--text-muted)] mb-1">
+                                    <span className="font-mono">{member.memberCode}</span>
+                                    <span className="text-[var(--accent-primary)] font-bold">Rp {Number(member.walletBalance || 0).toLocaleString()}</span>
+                                </div>
                                 <div className="flex items-center gap-4 text-xs">
                                     <span className={`flex items-center gap-1 ${selectedId === member.id ? 'text-[var(--accent-primary)]' : 'text-[var(--text-muted)]'}`}>
                                         <Star size={14} /> {member.pointsBalance.toLocaleString()} Poin
                                     </span>
+                                </div>
+                                <div className="mt-2 flex gap-2">
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); handleTopUp(member); }}
+                                        className="flex-1 bg-[var(--bg-elevated)] hover:bg-[var(--accent-primary)] hover:text-black border border-[var(--border-default)] text-[var(--text-primary)] text-xs py-1 rounded transition-colors font-bold flex justify-center items-center gap-1"
+                                    >
+                                        <Banknote size={12} /> Top Up
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -264,7 +374,7 @@ export default function MembersPage() {
             </aside>
 
             {/* Main Content */}
-            {selectedMember ? (
+            {displayMember ? (
                 <main className="flex-1 flex flex-col h-full bg-[var(--bg-base)] overflow-hidden relative">
                     {/* Header Gradient */}
                     <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-[#0f1a14] to-[#050a07] z-0 border-b border-[var(--border-default)]"></div>
@@ -273,25 +383,25 @@ export default function MembersPage() {
                     <div className="relative z-10 px-8 pt-8 pb-6 flex items-end justify-between">
                         <div className="flex items-end gap-6">
                             <div className="size-32 rounded-lg border-4 border-[#050a07] bg-slate-800 flex items-center justify-center shadow-lg">
-                                <span className="text-4xl font-bold text-[var(--text-muted)]">{selectedMember.fullName.substring(0, 2).toUpperCase()}</span>
+                                <span className="text-4xl font-bold text-[var(--text-muted)]">{displayMember.fullName.substring(0, 2).toUpperCase()}</span>
                             </div>
                             <div className="pb-2">
                                 <div className="flex items-center gap-3 mb-1">
-                                    <h1 className="text-3xl font-bold text-[var(--text-primary)]">{selectedMember.fullName}</h1>
+                                    <h1 className="text-3xl font-bold text-[var(--text-primary)]">{displayMember.fullName}</h1>
                                     <BadgeCheck size={24} className="text-[var(--accent-secondary)]" />
                                 </div>
                                 <div className="flex items-center gap-4 text-sm text-[var(--text-muted)] mb-2">
-                                    <span>ID: <span className="text-[var(--text-primary)] font-mono">{selectedMember.memberCode}</span></span>
+                                    <span>ID: <span className="text-[var(--text-primary)] font-mono">{displayMember.memberCode}</span></span>
                                     <span className="w-1 h-1 bg-slate-600 rounded-full"></span>
-                                    <span>Bergabung: <span className="text-[var(--text-primary)]">{new Date(selectedMember.joinDate).toLocaleDateString()}</span></span>
+                                    <span>Bergabung: <span className="text-[var(--text-primary)]">{new Date(displayMember.joinDate).toLocaleDateString()}</span></span>
                                     <span className="w-1 h-1 bg-slate-600 rounded-full"></span>
-                                    <span>No. HP: <span className="text-[var(--text-primary)]">{selectedMember.phone}</span></span>
+                                    <span>No. HP: <span className="text-[var(--text-primary)]">{displayMember.phone}</span></span>
                                 </div>
                                 <div className="flex gap-2">
-                                    <span className={`text-xs font-bold px-2 py-1 rounded border ${getTierColor(selectedMember.tier)}`}>
-                                        {selectedMember.tier} MEMBER
+                                    <span className={`text-xs font-bold px-2 py-1 rounded border ${getTierColor(displayMember.tier)}`}>
+                                        {displayMember.tier} MEMBER
                                     </span>
-                                    {selectedMember.status === 'ACTIVE' && (
+                                    {displayMember.status === 'ACTIVE' && (
                                         <span className="bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] text-xs font-bold px-2 py-1 rounded border border-[var(--accent-primary)]/20">AKTIF</span>
                                     )}
                                 </div>
@@ -300,7 +410,13 @@ export default function MembersPage() {
 
                         <div className="flex gap-2 pb-2">
                             <button
-                                onClick={() => { setEditingMember(selectedMember); setShowModal(true); }}
+                                onClick={() => handleTopUp(displayMember)}
+                                className="flex items-center gap-1.5 bg-[var(--accent-primary)] hover:bg-[#16a34a] text-black px-3 py-1.5 rounded text-sm font-bold transition-colors"
+                            >
+                                <Banknote size={16} /> Top Up Wallet
+                            </button>
+                            <button
+                                onClick={() => { setEditingMember(displayMember); setShowModal(true); }}
                                 className="flex items-center gap-1.5 bg-[var(--bg-surface)] hover:bg-[var(--bg-card)] border border-[var(--border-default)] text-[var(--text-primary)] px-3 py-1.5 rounded text-sm font-medium transition-colors"
                             >
                                 <Edit2 size={16} /> Edit Profil
@@ -325,7 +441,10 @@ export default function MembersPage() {
                             <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] p-4 rounded flex flex-col">
                                 <span className="text-[var(--text-muted)] text-xs uppercase font-bold tracking-wider mb-1">Sisa Poin</span>
                                 <div className="flex items-end justify-between">
-                                    <span className="text-3xl font-bold text-[var(--accent-primary)]">{selectedMember.pointsBalance.toLocaleString()}</span>
+                                    <div className="flex flex-col">
+                                        <span className="text-3xl font-bold text-[var(--accent-primary)]">{displayMember.pointsBalance.toLocaleString()}</span>
+                                        <span className="text-[10px] text-[var(--text-muted)]">Wallet: Rp {Number(displayMember.walletBalance || 0).toLocaleString()}</span>
+                                    </div>
                                     <Star className="text-[var(--accent-primary)]/30" size={32} />
                                 </div>
                             </div>
@@ -407,6 +526,14 @@ export default function MembersPage() {
                     member={editingMember}
                     onClose={() => setShowModal(false)}
                     onSave={() => { setShowModal(false); mutate(); }}
+                />
+            )}
+
+            {isTopUpOpen && (
+                <TopUpModal
+                    member={editingMember || selectedMember}
+                    onClose={() => setIsTopUpOpen(false)}
+                    onSuccess={() => { setIsTopUpOpen(false); mutate(); }}
                 />
             )}
 

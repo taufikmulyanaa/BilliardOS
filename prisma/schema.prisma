@@ -29,10 +29,12 @@ model Member {
   phone           String
   tier            Tier                @default(BRONZE)
   pointsBalance   Int                 @default(0) @map("points_balance")
+  walletBalance   Decimal             @default(0) @map("wallet_balance")
   joinDate        DateTime            @default(now()) @map("join_date") @db.Date
   status          MemberStatus        @default(ACTIVE)
   lastVisitAt     DateTime?           @map("last_visit_at")
   transactions    PointTransaction[]
+  walletHistory   WalletTransaction[]
   sessions        TableSession[]
   orders          Order[]
 
@@ -49,6 +51,19 @@ model PointTransaction {
   createdAt   DateTime  @default(now()) @map("created_at")
 
   @@map("point_transactions")
+}
+
+model WalletTransaction {
+  id          Int                   @id @default(autoincrement())
+  memberId    Int                   @map("member_id")
+  member      Member                @relation(fields: [memberId], references: [id])
+  type        WalletTransactionType
+  amount      Decimal
+  description String?
+  paymentMethod PaymentMethod?      @map("payment_method") // For TOPUP
+  createdAt   DateTime              @default(now()) @map("created_at")
+  
+  @@map("wallet_transactions")
 }
 
 model Table {
@@ -183,6 +198,13 @@ enum PointType {
   REDEEM
 }
 
+enum WalletTransactionType {
+  TOPUP
+  USAGE
+  REFUND
+  ADJUSTMENT
+}
+
 enum TableType {
   VIP
   REGULAR
@@ -213,6 +235,7 @@ enum PaymentMethod {
   QRIS
   DEBIT
   CREDIT
+  DEPOSIT
 }
 
 enum PaymentStatus {

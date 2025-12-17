@@ -496,111 +496,112 @@ export default function ReportsPage() {
                                     if (pNum <= 0) return null;
 
                                     return (
-                                        key = { i }
-                                            onClick = {() => setPage(pNum)}
-                                className={`w-8 h-7 flex items-center justify-center rounded-sm text-xs border transition-all
+                                        <button
+                                            key={i}
+                                            onClick={() => setPage(pNum)}
+                                            className={`w-8 h-7 flex items-center justify-center rounded-sm text-xs border transition-all
                                                 ${page === pNum
-                                        ? 'bg-[var(--accent-primary)] text-black border-[var(--accent-primary)] font-bold'
-                                        : 'bg-[var(--bg-card)] text-[var(--text-muted)] border-[var(--border-default)] hover:text-[var(--text-primary)] hover:border-[var(--accent-primary)]'
-                                    }`}
+                                                    ? 'bg-[var(--accent-primary)] text-black border-[var(--accent-primary)] font-bold'
+                                                    : 'bg-[var(--bg-card)] text-[var(--text-muted)] border-[var(--border-default)] hover:text-[var(--text-primary)] hover:border-[var(--accent-primary)]'
+                                                }`}
                                         >
-                                {pNum}
-                            </button>
-                            );
+                                            {pNum}
+                                        </button>
+                                    );
                                 })}
 
-                            <button
-                                onClick={() => setPage(p => p + 1)}
-                                disabled={!transactionsData.meta?.hasNextPage}
-                                className="px-3 py-1 bg-[var(--bg-card)] border border-[var(--border-default)] rounded-sm text-xs text-[var(--text-primary)] disabled:opacity-30 hover:bg-[var(--accent-primary)] hover:text-black hover:border-transparent transition-all"
-                            >
-                                Next
-                            </button>
-                        </div>
+                                <button
+                                    onClick={() => setPage(p => p + 1)}
+                                    disabled={!transactionsData.meta?.hasNextPage}
+                                    className="px-3 py-1 bg-[var(--bg-card)] border border-[var(--border-default)] rounded-sm text-xs text-[var(--text-primary)] disabled:opacity-30 hover:bg-[var(--accent-primary)] hover:text-black hover:border-transparent transition-all"
+                                >
+                                    Next
+                                </button>
+                            </div>
                         </div>
                     )}
-            </div>
+                </div>
             </div >
         );
-};
+    };
 
-return (
-    <div className="flex min-h-screen bg-[var(--bg-base)]">
-        {/* Sidebar */}
-        <div className="w-64 bg-[var(--bg-surface)] border-r border-[var(--border-default)] p-4 hidden md:block print:hidden">
-            <nav className="space-y-1 mt-4">
-                <button
-                    onClick={() => setActiveView('SHIFT')}
-                    className={`w-full text-left p-3 rounded-lg flex items-center gap-3 transition-colors ${activeView === 'SHIFT'
-                        ? 'bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] font-bold border border-[var(--accent-primary)]/20'
-                        : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated)]'
-                        }`}
-                >
-                    <FileText size={18} />
-                    Laporan Shift
-                </button>
-                <button
-                    onClick={() => setActiveView('TRANSACTIONS')}
-                    className={`w-full text-left p-3 rounded-lg flex items-center gap-3 transition-colors ${activeView === 'TRANSACTIONS'
-                        ? 'bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] font-bold border border-[var(--accent-primary)]/20'
-                        : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated)]'
-                        }`}
-                >
-                    <History size={18} />
-                    Riwayat Transaksi
-                </button>
-            </nav>
-        </div>
+    return (
+        <div className="flex min-h-screen bg-[var(--bg-base)]">
+            {/* Sidebar */}
+            <div className="w-64 bg-[var(--bg-surface)] border-r border-[var(--border-default)] p-4 hidden md:block print:hidden">
+                <nav className="space-y-1 mt-4">
+                    <button
+                        onClick={() => setActiveView('SHIFT')}
+                        className={`w-full text-left p-3 rounded-lg flex items-center gap-3 transition-colors ${activeView === 'SHIFT'
+                            ? 'bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] font-bold border border-[var(--accent-primary)]/20'
+                            : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated)]'
+                            }`}
+                    >
+                        <FileText size={18} />
+                        Laporan Shift
+                    </button>
+                    <button
+                        onClick={() => setActiveView('TRANSACTIONS')}
+                        className={`w-full text-left p-3 rounded-lg flex items-center gap-3 transition-colors ${activeView === 'TRANSACTIONS'
+                            ? 'bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] font-bold border border-[var(--accent-primary)]/20'
+                            : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated)]'
+                            }`}
+                    >
+                        <History size={18} />
+                        Riwayat Transaksi
+                    </button>
+                </nav>
+            </div>
 
-        {/* Main Content */}
-        <div className="flex-1 flex flex-col h-screen overflow-hidden">
-            <main className="flex-1 overflow-y-auto p-4 md:p-8 pb-32">
-                {activeView === 'SHIFT' ? (
-                    <>
-                        {/* Shift Report Content */}
-                        {!hasOpenShift && step !== 4 ? (
-                            <div className="flex h-full items-center justify-center text-[var(--text-muted)] pt-20">
-                                <div className="text-center">
-                                    <AlertTriangle size={48} className="mx-auto mb-4 opacity-50" />
-                                    <h2 className="text-xl font-bold">Tidak ada Shift Aktif</h2>
-                                    <p>Buka shift baru dari Dashboard untuk memulai laporan.</p>
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="max-w-3xl mx-auto">
-                                {/* Steps Indicator */}
-                                {step !== 4 && (
-                                    <div className="flex items-center justify-between mb-8 print:hidden">
-                                        <div className={`flex items-center gap-2 ${step >= 1 ? 'text-[var(--accent-primary)]' : 'text-slate-600'}`}>
-                                            <div className="size-8 rounded-full border-2 flex items-center justify-center font-bold border-current">1</div>
-                                            <span className="font-bold hidden sm:inline">Overview</span>
-                                        </div>
-                                        <div className="h-0.5 flex-1 bg-[var(--bg-elevated)] mx-4"></div>
-                                        <div className={`flex items-center gap-2 ${step >= 2 ? 'text-[var(--accent-secondary)]' : 'text-slate-600'}`}>
-                                            <div className="size-8 rounded-full border-2 flex items-center justify-center font-bold border-current">2</div>
-                                            <span className="font-bold hidden sm:inline">Cash Count</span>
-                                        </div>
-                                        <div className="h-0.5 flex-1 bg-[var(--bg-elevated)] mx-4"></div>
-                                        <div className={`flex items-center gap-2 ${step >= 3 ? 'text-[var(--text-primary)]' : 'text-slate-600'}`}>
-                                            <div className="size-8 rounded-full border-2 flex items-center justify-center font-bold border-current">3</div>
-                                            <span className="font-bold hidden sm:inline">Review</span>
-                                        </div>
+            {/* Main Content */}
+            <div className="flex-1 flex flex-col h-screen overflow-hidden">
+                <main className="flex-1 overflow-y-auto p-4 md:p-8 pb-32">
+                    {activeView === 'SHIFT' ? (
+                        <>
+                            {/* Shift Report Content */}
+                            {!hasOpenShift && step !== 4 ? (
+                                <div className="flex h-full items-center justify-center text-[var(--text-muted)] pt-20">
+                                    <div className="text-center">
+                                        <AlertTriangle size={48} className="mx-auto mb-4 opacity-50" />
+                                        <h2 className="text-xl font-bold">Tidak ada Shift Aktif</h2>
+                                        <p>Buka shift baru dari Dashboard untuk memulai laporan.</p>
                                     </div>
-                                )}
+                                </div>
+                            ) : (
+                                <div className="max-w-3xl mx-auto">
+                                    {/* Steps Indicator */}
+                                    {step !== 4 && (
+                                        <div className="flex items-center justify-between mb-8 print:hidden">
+                                            <div className={`flex items-center gap-2 ${step >= 1 ? 'text-[var(--accent-primary)]' : 'text-slate-600'}`}>
+                                                <div className="size-8 rounded-full border-2 flex items-center justify-center font-bold border-current">1</div>
+                                                <span className="font-bold hidden sm:inline">Overview</span>
+                                            </div>
+                                            <div className="h-0.5 flex-1 bg-[var(--bg-elevated)] mx-4"></div>
+                                            <div className={`flex items-center gap-2 ${step >= 2 ? 'text-[var(--accent-secondary)]' : 'text-slate-600'}`}>
+                                                <div className="size-8 rounded-full border-2 flex items-center justify-center font-bold border-current">2</div>
+                                                <span className="font-bold hidden sm:inline">Cash Count</span>
+                                            </div>
+                                            <div className="h-0.5 flex-1 bg-[var(--bg-elevated)] mx-4"></div>
+                                            <div className={`flex items-center gap-2 ${step >= 3 ? 'text-[var(--text-primary)]' : 'text-slate-600'}`}>
+                                                <div className="size-8 rounded-full border-2 flex items-center justify-center font-bold border-current">3</div>
+                                                <span className="font-bold hidden sm:inline">Review</span>
+                                            </div>
+                                        </div>
+                                    )}
 
-                                {/* Step Content */}
-                                {step === 1 && renderStep1_Overview()}
-                                {step === 2 && renderStep2_CashCount()}
-                                {step === 3 && renderStep3_Review()}
-                                {step === 4 && renderStep4_Success()}
-                            </div>
-                        )}
-                    </>
-                ) : (
-                    renderTransactions()
-                )}
-            </main>
+                                    {/* Step Content */}
+                                    {step === 1 && renderStep1_Overview()}
+                                    {step === 2 && renderStep2_CashCount()}
+                                    {step === 3 && renderStep3_Review()}
+                                    {step === 4 && renderStep4_Success()}
+                                </div>
+                            )}
+                        </>
+                    ) : (
+                        renderTransactions()
+                    )}
+                </main>
+            </div>
         </div>
-    </div>
-);
+    );
 }

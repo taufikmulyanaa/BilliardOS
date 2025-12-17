@@ -189,7 +189,7 @@ export async function GET(request: Request) {
             ];
         }
 
-        const [total, orders] = await prisma.$transaction([
+        const [total, orders, aggregation] = await prisma.$transaction([
             prisma.order.count({ where }),
             prisma.order.findMany({
                 where,
@@ -202,6 +202,12 @@ export async function GET(request: Request) {
                         select: { fullName: true }
                     }
                 }
+            }),
+            prisma.order.aggregate({
+                _sum: {
+                    totalAmount: true
+                },
+                where
             })
         ]);
 
@@ -224,6 +230,9 @@ export async function GET(request: Request) {
                 totalPages,
                 hasNextPage: page < totalPages,
                 hasPrevPage: page > 1
+            },
+            summary: {
+                totalRevenue: aggregation._sum.totalAmount || 0
             }
         });
 

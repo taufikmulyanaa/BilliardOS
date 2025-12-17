@@ -772,7 +772,7 @@ const WalkinModal = ({ tables, onClose, onSuccess }: { tables: any[], onClose: (
                             <p className="text-sm text-[var(--text-muted)] text-center py-4">Tidak ada meja tersedia</p>
                         )}
                     </div>
-                    <button type="submit" disabled={!selectedTable || !customerName || isSubmitting}
+                    <button type="submit" disabled={!selectedTable || isSubmitting}
                         className="w-full py-3 bg-[var(--accent-primary)] hover:bg-[#16a34a] text-black font-bold rounded disabled:opacity-50">
                         {isSubmitting ? 'Memproses...' : 'Start Session'}
                     </button>

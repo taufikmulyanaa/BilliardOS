@@ -283,8 +283,8 @@ export default function SettingsPage() {
                             key={item.key}
                             onClick={() => setActiveTab(item.key as any)}
                             className={`w-full flex items-center gap-3 px-3 py-2 rounded text-left transition-colors ${activeTab === item.key
-                                    ? 'bg-[#22c55e]/10 text-[#22c55e] border border-[#22c55e]/30'
-                                    : 'text-slate-400 hover:text-white hover:bg-[#16261d]'
+                                ? 'bg-[#22c55e]/10 text-[#22c55e] border border-[#22c55e]/30'
+                                : 'text-slate-400 hover:text-white hover:bg-[#16261d]'
                                 }`}
                         >
                             <item.icon size={18} />
@@ -350,30 +350,128 @@ export default function SettingsPage() {
                                 <Plus size={18} /> Add Table
                             </button>
                         </div>
-                        <div className="grid grid-cols-4 gap-4">
-                            {tables.map((table: any) => (
-                                <div key={table.id} className="bg-[#0f1a14] border border-[#1e3328] rounded-xl p-4">
-                                    <div className="flex justify-between items-start mb-3">
-                                        <div>
-                                            <h4 className="font-bold text-white">{table.name}</h4>
-                                            <p className="text-xs text-slate-500">{table.id}</p>
-                                        </div>
-                                        <span className={`px-2 py-1 rounded text-xs font-bold ${table.type === 'VIP' ? 'bg-[#eab308]/20 text-[#eab308]' : 'bg-slate-500/20 text-slate-400'
-                                            }`}>{table.type}</span>
+
+                        {/* Rate Management Section */}
+                        <div className="bg-[#0f1a14] border border-[#1e3328] rounded-xl p-6 mb-6">
+                            <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                                <Shield size={18} className="text-[#eab308]" /> Global Rate Configuration
+                            </h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="bg-[#16261d] p-4 rounded-lg border border-[#1e3328]">
+                                    <div className="flex justify-between items-center mb-3">
+                                        <h5 className="font-bold text-[#eab308]">VIP Tables</h5>
+                                        <span className="text-xs text-slate-400">Apply to all VIP tables</span>
                                     </div>
-                                    <p className="text-[#22c55e] font-mono mb-4">Rp {table.hourlyRate?.toLocaleString()}/jam</p>
                                     <div className="flex gap-2">
-                                        <button onClick={() => { setEditTable(table); setShowTableModal(true); }}
-                                            className="flex-1 py-2 bg-[#16261d] hover:bg-[#1e3328] rounded text-sm text-slate-300">
-                                            <Edit2 size={14} className="inline mr-1" /> Edit
-                                        </button>
-                                        <button onClick={() => handleDeleteTable(table.id)}
-                                            className="py-2 px-3 bg-red-500/10 hover:bg-red-500/20 rounded text-red-500">
-                                            <Trash2 size={14} />
+                                        <input
+                                            type="number"
+                                            placeholder="Hourly Rate (Rp)"
+                                            className="flex-1 bg-[#050a07] border border-[#1e3328] rounded p-2 text-white"
+                                            id="vip-rate-input"
+                                        />
+                                        <button
+                                            onClick={async () => {
+                                                const input = document.getElementById('vip-rate-input') as HTMLInputElement;
+                                                const rate = Number(input.value);
+                                                if (!rate) return showToast('error', 'Please enter a valid rate');
+                                                if (!confirm(`Update ALL VIP tables to Rp ${rate.toLocaleString()}?`)) return;
+
+                                                try {
+                                                    const res = await fetch('/api/tables/update-rates', {
+                                                        method: 'POST',
+                                                        headers: { 'Content-Type': 'application/json' },
+                                                        body: JSON.stringify({ type: 'VIP', rate })
+                                                    });
+                                                    if (!res.ok) throw new Error('Failed to update');
+                                                    showToast('success', 'VIP rates updated');
+                                                    mutateTables();
+                                                } catch (e) { showToast('error', 'Failed to update rates'); }
+                                            }}
+                                            className="px-4 py-2 bg-[#eab308] hover:bg-yellow-500 text-black font-bold rounded text-sm"
+                                        >
+                                            Update All
                                         </button>
                                     </div>
                                 </div>
-                            ))}
+                                <div className="bg-[#16261d] p-4 rounded-lg border border-[#1e3328]">
+                                    <div className="flex justify-between items-center mb-3">
+                                        <h5 className="font-bold text-slate-300">REGULAR Tables</h5>
+                                        <span className="text-xs text-slate-400">Apply to all Regular tables</span>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <input
+                                            type="number"
+                                            placeholder="Hourly Rate (Rp)"
+                                            className="flex-1 bg-[#050a07] border border-[#1e3328] rounded p-2 text-white"
+                                            id="regular-rate-input"
+                                        />
+                                        <button
+                                            onClick={async () => {
+                                                const input = document.getElementById('regular-rate-input') as HTMLInputElement;
+                                                const rate = Number(input.value);
+                                                if (!rate) return showToast('error', 'Please enter a valid rate');
+                                                if (!confirm(`Update ALL REGULAR tables to Rp ${rate.toLocaleString()}?`)) return;
+
+                                                try {
+                                                    const res = await fetch('/api/tables/update-rates', {
+                                                        method: 'POST',
+                                                        headers: { 'Content-Type': 'application/json' },
+                                                        body: JSON.stringify({ type: 'REGULAR', rate })
+                                                    });
+                                                    if (!res.ok) throw new Error('Failed to update');
+                                                    showToast('success', 'Regular rates updated');
+                                                    mutateTables();
+                                                } catch (e) { showToast('error', 'Failed to update rates'); }
+                                            }}
+                                            className="px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white font-bold rounded text-sm"
+                                        >
+                                            Update All
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Table List View */}
+                        <div className="bg-[#0f1a14] border border-[#1e3328] rounded-xl overflow-hidden">
+                            <table className="w-full">
+                                <thead className="bg-[#16261d]">
+                                    <tr>
+                                        <th className="text-left p-4 text-xs text-slate-500 uppercase font-bold">ID</th>
+                                        <th className="text-left p-4 text-xs text-slate-500 uppercase font-bold">Name</th>
+                                        <th className="text-left p-4 text-xs text-slate-500 uppercase font-bold">Type</th>
+                                        <th className="text-left p-4 text-xs text-slate-500 uppercase font-bold">Hourly Rate</th>
+                                        <th className="text-right p-4 text-xs text-slate-500 uppercase font-bold">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {tables.map((table: any) => (
+                                        <tr key={table.id} className="border-t border-[#1e3328] hover:bg-[#16261d]">
+                                            <td className="p-4 text-slate-500 font-mono text-sm">{table.id}</td>
+                                            <td className="p-4 text-white font-bold">{table.name}</td>
+                                            <td className="p-4">
+                                                <span className={`px-2 py-1 rounded text-xs font-bold ${table.type === 'VIP' ? 'bg-[#eab308]/20 text-[#eab308]' : 'bg-slate-500/20 text-slate-400'
+                                                    }`}>
+                                                    {table.type}
+                                                </span>
+                                            </td>
+                                            <td className="p-4 text-[#22c55e] font-mono">
+                                                Rp {table.hourlyRate?.toLocaleString()} / jam
+                                            </td>
+                                            <td className="p-4 text-right">
+                                                <button onClick={() => { setEditTable(table); setShowTableModal(true); }}
+                                                    className="p-2 text-slate-400 hover:text-white mr-2">
+                                                    <Edit2 size={16} />
+                                                </button>
+                                                <button onClick={() => handleDeleteTable(table.id)}
+                                                    className="p-2 text-slate-400 hover:text-red-500">
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 )}

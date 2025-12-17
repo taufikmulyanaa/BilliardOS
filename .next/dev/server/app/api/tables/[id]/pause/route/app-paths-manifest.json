@@ -1,0 +1,3 @@
+{
+  "/api/tables/[id]/pause/route": "app/api/tables/[id]/pause/route.js"
+}

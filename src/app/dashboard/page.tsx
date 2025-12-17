@@ -680,7 +680,7 @@ const WalkinModal = ({ tables, onClose, onSuccess }: { tables: any[], onClose: (
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!selectedTable || !customerName) return;
+        if (!selectedTable) return;
 
         setIsSubmitting(true);
         try {
@@ -689,7 +689,7 @@ const WalkinModal = ({ tables, onClose, onSuccess }: { tables: any[], onClose: (
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    customerName,
+                    customerName: customerName || 'Guest',
                     phone: '-',
                     pax,
                     tableType,
@@ -706,7 +706,7 @@ const WalkinModal = ({ tables, onClose, onSuccess }: { tables: any[], onClose: (
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    customerName,
+                    customerName: customerName || 'Guest',
                     billingType: 'open'
                 })
             });

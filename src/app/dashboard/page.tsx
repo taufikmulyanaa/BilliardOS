@@ -121,47 +121,73 @@ const RealTimeTimer = ({
 };
 
 // Compact timer for list view
-const ListViewTimer = ({ startTime, hourlyRate }: { startTime: string, hourlyRate: number }) => {
+const ListViewTimer = ({ startTime, endTime, hourlyRate }: { startTime: string, endTime?: string | null, hourlyRate: number }) => {
     const [elapsedSeconds, setElapsedSeconds] = useState(0);
 
-    useEffect(() => {
-        const start = new Date(startTime).getTime();
+    const isFixedPackage = !!endTime;
+    const endTimeMs = endTime ? new Date(endTime).getTime() : 0;
+    const startTimeMs = new Date(startTime).getTime();
+    const totalPackageSeconds = isFixedPackage ? Math.floor((endTimeMs - startTimeMs) / 1000) : 0;
 
+    useEffect(() => {
         const updateTimer = () => {
             const now = Date.now();
-            const seconds = Math.floor((now - start) / 1000);
+            const seconds = Math.floor((now - startTimeMs) / 1000);
             setElapsedSeconds(seconds);
         };
-
         updateTimer();
         const interval = setInterval(updateTimer, 1000);
         return () => clearInterval(interval);
-    }, [startTime]);
+    }, [startTimeMs]);
 
-    const totalMinutes = Math.floor(elapsedSeconds / 60);
-    const hours = Math.floor(totalMinutes / 60);
-    const mins = totalMinutes % 60;
-    const secs = elapsedSeconds % 60;
-    // Calculate bill per second for real-time update
-    const bill = Math.ceil((elapsedSeconds / 3600) * hourlyRate);
+    // Calculate display values
+    const remainingSeconds = isFixedPackage ? Math.max(0, totalPackageSeconds - elapsedSeconds) : 0;
 
-    const timeDisplay = hours > 0
-        ? `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
-        : `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    // For display: Open Bill shows Elapsed, Package shows Remaining
+    const displaySeconds = isFixedPackage ? remainingSeconds : elapsedSeconds;
+
+    const hours = Math.floor(displaySeconds / 3600);
+    const mins = Math.floor((displaySeconds % 3600) / 60);
+    const secs = displaySeconds % 60;
+
+    const timeDisplay = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+    // Bill calculation
+    const bill = isFixedPackage
+        ? Math.ceil((totalPackageSeconds / 3600) * hourlyRate)
+        : Math.ceil((elapsedSeconds / 3600) * hourlyRate);
+
+    // Styling for package warnings
+    const isTimeUp = isFixedPackage && remainingSeconds <= 0;
+    const isAlmostUp = isFixedPackage && remainingSeconds <= 300 && !isTimeUp;
+
+    const timeColor = isTimeUp ? 'text-red-500 animate-pulse' : isAlmostUp ? 'text-yellow-500' : 'text-[var(--text-primary)]';
 
     return (
-        <>
-            <div className="flex flex-col items-end">
-                <span className="text-xs text-[var(--text-muted)] uppercase font-bold">Duration</span>
-                <span className="font-mono font-bold text-[var(--text-primary)] text-lg">
+        <div className="flex items-center gap-12 mr-8">
+            <div className="flex flex-col items-end w-32">
+                <span className="text-[10px] text-[var(--text-muted)] uppercase font-bold tracking-wider mb-0.5">
+                    {isFixedPackage ? (isTimeUp ? 'WAKTU HABIS' : 'SISA WAKTU') : 'DURASI'}
+                </span>
+                <span className={`font-mono font-bold text-xl leading-none shadow-black drop-shadow-sm ${timeColor}`}>
                     {timeDisplay}
                 </span>
+                {isFixedPackage && !isTimeUp && (
+                    <span className="text-[10px] text-[var(--accent-secondary)] font-bold mt-0.5">
+                        PAKET {parseFloat((totalPackageSeconds / 3600).toFixed(1))} JAM
+                    </span>
+                )}
             </div>
-            <div className="flex flex-col items-end min-w-[100px]">
-                <span className="text-xs text-[var(--text-muted)] uppercase font-bold">Current Bill</span>
-                <span className="font-mono font-bold text-[var(--accent-primary)] text-lg">Rp {bill.toLocaleString()}</span>
+            <div className="flex flex-col items-end w-32">
+                <span className="text-[10px] text-[var(--text-muted)] uppercase font-bold tracking-wider mb-0.5">Current Bill</span>
+                <span className="font-mono font-bold text-[var(--accent-primary)] text-xl leading-none drop-shadow-sm">
+                    Rp {bill.toLocaleString()}
+                </span>
+                {isFixedPackage && (
+                    <span className="text-[10px] text-[var(--text-muted)] mt-0.5">Fixed Price</span>
+                )}
             </div>
-        </>
+        </div>
     );
 };
 
@@ -1145,32 +1171,39 @@ export default function DashboardPage() {
                                             ${selectedId === table.id ? 'border-[var(--accent-primary)] bg-[var(--bg-card)]' : 'border-[var(--border-default)] bg-[var(--bg-surface)]'}
                                         `}
                                 >
-                                    <div className="flex items-center gap-4">
-                                        <div className={`size-3 rounded-full ${table.status === 'ACTIVE' ? 'bg-[var(--accent-primary)] animate-pulse' :
+                                    <div className="flex items-center gap-6 h-full">
+                                        <div className={`size-3 rounded-full shrink-0 ${table.status === 'ACTIVE' ? 'bg-[var(--accent-primary)] animate-pulse shadow-[0_0_8px_var(--accent-primary)]' :
                                             table.status === 'BOOKED' ? 'bg-[var(--accent-secondary)]' :
                                                 table.status === 'MAINTENANCE' ? 'bg-[#0ea5e9]' : 'bg-slate-500'
                                             }`}></div>
-                                        <div>
-                                            <h3 className="font-bold text-[var(--text-primary)] text-lg">{table.name}</h3>
-                                            <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded border ${(table.type === 'VIP')
-                                                ? 'text-[#c084fc] border-[#c084fc]/30 bg-[#c084fc]/10'
-                                                : 'text-[#4ade80] border-[#4ade80]/30 bg-[#4ade80]/10'
+
+                                        <div className="w-[180px]">
+                                            <h3 className="font-bold text-[var(--text-primary)] text-xl leading-tight mb-1">{table.name}</h3>
+                                            <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded border inline-block ${table.type === 'VIP' ? 'text-[#c084fc] border-[#c084fc]/30 bg-[#c084fc]/10' :
+                                                    table.type === 'SNOOKER' ? 'text-[#f97316] border-[#f97316]/30 bg-[#f97316]/10' :
+                                                        'text-[#4ade80] border-[#4ade80]/30 bg-[#4ade80]/10'
                                                 }`}>
                                                 {table.type || 'REGULAR'}
                                             </span>
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center gap-8">
-                                        {table.status === 'ACTIVE' && table.activeSession && (
+                                    <div className="flex flex-1 items-center justify-end">
+                                        {table.status === 'ACTIVE' && table.activeSession ? (
                                             <ListViewTimer
                                                 startTime={table.activeSession.startTime}
+                                                endTime={table.activeSession.endTime}
                                                 hourlyRate={table.hourlyRate || 50000}
                                             />
+                                        ) : (
+                                            <div className="flex-1"></div>
                                         )}
-                                        <div className="flex items-center gap-2 text-[var(--text-muted)] min-w-[150px] justify-end">
-                                            <Users size={16} />
-                                            <span className="text-sm font-medium">{table.activeSession?.customerName || '-'}</span>
+
+                                        <div className="flex items-center justify-end gap-3 text-[var(--text-muted)] w-[180px] border-l border-white/10 pl-6 py-1">
+                                            <Users size={20} className="text-white/50" />
+                                            <span className="text-base font-bold text-white truncate max-w-[120px]">
+                                                {table.activeSession?.customerName || '-'}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>

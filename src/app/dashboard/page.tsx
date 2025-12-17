@@ -1328,15 +1328,6 @@ export default function DashboardPage() {
                                 </button>
                             </div>
 
-                            <button
-                                onClick={() => setShowCheckout(true)}
-                                disabled={selectedTable.status !== 'ACTIVE'}
-                                className="w-full mb-6 h-10 bg-[var(--accent-secondary)] hover:bg-yellow-500 text-black font-bold rounded-lg shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 text-sm"
-                            >
-                                <Receipt size={18} />
-                                Checkout & Bayar
-                            </button>
-
                             {selectedTable.status === 'ACTIVE' && selectedTable.activeSession && (
                                 <div className="bg-[var(--bg-base)] border border-[var(--border-default)] rounded p-4">
                                     <div className="flex justify-between items-center">
@@ -1348,6 +1339,15 @@ export default function DashboardPage() {
                                     </div>
                                 </div>
                             )}
+
+                            <button
+                                onClick={() => setShowCheckout(true)}
+                                disabled={selectedTable.status !== 'ACTIVE'}
+                                className="w-full mt-4 h-10 bg-[var(--accent-secondary)] hover:bg-yellow-500 text-black font-bold rounded-lg shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 text-sm"
+                            >
+                                <Receipt size={18} />
+                                Checkout & Bayar
+                            </button>
                         </div>
                     </>
                 ) : (

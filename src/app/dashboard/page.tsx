@@ -752,10 +752,7 @@ const WalkinModal = ({ tables, onClose, onSuccess }: { tables: any[], onClose: (
                         </div>
                         <div>
                             <label className="text-xs text-[var(--text-muted)] uppercase font-bold block mb-1">Tipe Meja</label>
-                            <select value={tableType} onChange={e => {
-                                console.log('Selected Type:', e.target.value);
-                                setTableType(e.target.value as any);
-                            }}
+                            <select value={tableType} onChange={e => setTableType(e.target.value as any)}
                                 className="w-full bg-[var(--bg-base)] border border-[var(--border-default)] rounded p-2 text-[var(--text-primary)]">
                                 <option value="REGULAR">Regular</option>
                                 <option value="VIP">VIP</option>

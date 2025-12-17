@@ -24,6 +24,9 @@ const protectedApiRoutes: Record<string, string[]> = {
     "GET /api/": [],
     "POST /api/transactions": [],
     "POST /api/tables/": [], // Start/Stop/Transfer
+    "GET /api/members/": [], // Allow viewing members and transactions
+    "POST /api/members/": [], // Allow creating/updating members
+    "PATCH /api/members/": [], // Allow updating members
 };
 
 // UI routes that require authentication

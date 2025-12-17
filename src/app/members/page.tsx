@@ -50,8 +50,8 @@ const TransactionHistoryList = ({ memberId }: { memberId: number }) => {
                             </td>
                             <td className="p-3">
                                 <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${tx.type === 'TOPUP' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
-                                        tx.type === 'ORDER' ? 'bg-blue-500/10 text-blue-500 border-blue-500/20' :
-                                            'bg-slate-500/10 text-slate-400 border-slate-500/20'
+                                    tx.type === 'ORDER' ? 'bg-blue-500/10 text-blue-500 border-blue-500/20' :
+                                        'bg-slate-500/10 text-slate-400 border-slate-500/20'
                                     }`}>
                                     {tx.type}
                                 </span>
@@ -469,26 +469,26 @@ export default function MembersPage() {
                         <div className="flex gap-2 pb-2">
                             <button
                                 onClick={() => handleTopUp(displayMember)}
-                                className="flex items-center gap-1.5 bg-[var(--accent-primary)] hover:bg-[#16a34a] text-black px-3 py-1.5 rounded text-sm font-bold transition-colors"
+                                className="flex items-center gap-1.5 bg-[var(--accent-primary)] hover:bg-[#16a34a] text-black h-8 px-3 rounded text-xs font-bold transition-colors"
                             >
-                                <Banknote size={16} /> Top Up Wallet
+                                <Banknote size={14} /> Top Up Wallet
                             </button>
                             <button
                                 onClick={() => { setEditingMember(displayMember); setShowModal(true); }}
-                                className="flex items-center gap-1.5 bg-[var(--bg-surface)] hover:bg-[var(--bg-card)] border border-[var(--border-default)] text-[var(--text-primary)] px-3 py-1.5 rounded text-sm font-medium transition-colors"
+                                className="flex items-center gap-1.5 bg-[var(--bg-surface)] hover:bg-[var(--bg-card)] border border-[var(--border-default)] text-[var(--text-primary)] h-8 px-3 rounded text-xs font-medium transition-colors"
                             >
-                                <Edit2 size={16} /> Edit Profil
+                                <Edit2 size={14} /> Edit Profil
                             </button>
                             <button
                                 onClick={() => setShowDeleteConfirm(true)}
-                                className="flex items-center gap-1.5 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-500 px-3 py-1.5 rounded text-sm font-medium transition-colors"
+                                className="flex items-center gap-1.5 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-500 h-8 px-3 rounded text-xs font-medium transition-colors"
                             >
-                                <X size={16} /> Hapus Member
+                                <X size={14} /> Hapus Member
                             </button>
                             <button
-                                className="flex items-center gap-1.5 bg-[#eab308] hover:bg-yellow-500 text-black px-3 py-1.5 rounded text-sm font-bold border border-yellow-600 transition-colors shadow-none"
+                                className="flex items-center gap-1.5 bg-[#eab308] hover:bg-yellow-500 text-black h-8 px-3 rounded text-xs font-bold border border-yellow-600 transition-colors shadow-none"
                             >
-                                <Gift size={16} /> Tukar Reward
+                                <Gift size={14} /> Tukar Reward
                             </button>
                         </div>
                     </div>

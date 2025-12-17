@@ -676,11 +676,14 @@ const WalkinModal = ({ tables, onClose, onSuccess }: { tables: any[], onClose: (
     const [selectedTable, setSelectedTable] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    console.log('WalkinModal Debug:', { tableType, totalTables: tables.length, sample: tables[0] });
+    console.log(`Current Filter: '${tableType}'`);
     const availableTables = tables.filter((t: any) => {
-        const match = t.status === 'AVAILABLE' && t.type === tableType;
-        if (t.type === 'VIP') console.log('Checking VIP:', t.name, t.status, match);
-        return match;
+        const typeMatch = t.type === tableType;
+        const statusMatch = t.status === 'AVAILABLE';
+        if (t.type === 'VIP' || t.type === 'SNOOKER') {
+            console.log(`Check ${t.name}: Type('${t.type}')===Filter('${tableType}')? ${typeMatch}. Status('${t.status}')===Available? ${statusMatch}`);
+        }
+        return typeMatch && statusMatch;
     });
 
     const handleSubmit = async (e: React.FormEvent) => {

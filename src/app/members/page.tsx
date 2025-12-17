@@ -11,6 +11,64 @@ import {
 
 const fetcher = (url: string) => fetch(url).then(r => r.json());
 
+// Transaction History Component
+const TransactionHistoryList = ({ memberId }: { memberId: number }) => {
+    const { data, isLoading } = useSWR(`/api/members/${memberId}/transactions`, fetcher);
+
+    if (isLoading) return <div className="p-8 text-center text-[var(--text-muted)]">Loading history...</div>;
+
+    const transactions = data?.data || [];
+
+    if (transactions.length === 0) {
+        return (
+            <div className="rounded border border-[var(--border-default)] overflow-hidden bg-[var(--bg-surface)]">
+                <div className="p-8 text-center text-[var(--text-muted)]">
+                    Tidak ada riwayat transaksi.
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="rounded border border-[var(--border-default)] overflow-hidden bg-[var(--bg-surface)]">
+            <table className="w-full text-sm text-left">
+                <thead className="bg-[var(--bg-card)] text-[var(--text-muted)] font-bold border-b border-[var(--border-default)]">
+                    <tr>
+                        <th className="p-3">Waktu</th>
+                        <th className="p-3">Tipe</th>
+                        <th className="p-3">Keterangan</th>
+                        <th className="p-3">Metode</th>
+                        <th className="p-3 text-right">Jumlah</th>
+                    </tr>
+                </thead>
+                <tbody className="divide-y divide-[var(--border-default)]">
+                    {transactions.map((tx: any) => (
+                        <tr key={tx.id} className="hover:bg-[var(--bg-base)] transition-colors">
+                            <td className="p-3 text-[var(--text-muted)] whitespace-nowrap">
+                                <div>{new Date(tx.date).toLocaleDateString()}</div>
+                                <div className="text-xs">{new Date(tx.date).toLocaleTimeString()}</div>
+                            </td>
+                            <td className="p-3">
+                                <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${tx.type === 'TOPUP' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
+                                        tx.type === 'ORDER' ? 'bg-blue-500/10 text-blue-500 border-blue-500/20' :
+                                            'bg-slate-500/10 text-slate-400 border-slate-500/20'
+                                    }`}>
+                                    {tx.type}
+                                </span>
+                            </td>
+                            <td className="p-3 font-medium text-[var(--text-primary)]">{tx.description}</td>
+                            <td className="p-3 text-[var(--text-muted)] text-xs font-mono">{tx.paymentMethod}</td>
+                            <td className={`p-3 text-right font-bold ${tx.amount > 0 ? 'text-green-500' : 'text-red-500'}`}>
+                                {tx.amount > 0 ? '+' : ''}{tx.amount.toLocaleString()}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
+};
+
 // Top Up Modal
 const TopUpModal = ({ member, onClose, onSuccess }: { member: any, onClose: () => void, onSuccess: () => void }) => {
     const [amount, setAmount] = useState(50000);
@@ -501,11 +559,7 @@ export default function MembersPage() {
                     {/* Tab Content */}
                     <div className="flex-1 overflow-y-auto p-8 bg-[var(--bg-base)]">
                         {activeTab === 'history' && (
-                            <div className="rounded border border-[var(--border-default)] overflow-hidden bg-[var(--bg-surface)]">
-                                <div className="p-8 text-center text-[var(--text-muted)]">
-                                    Tidak ada riwayat transaksi.
-                                </div>
-                            </div>
+                            <TransactionHistoryList memberId={displayMember.id} />
                         )}
                         {activeTab !== 'history' && (
                             <div className="flex flex-col items-center justify-center h-full text-[var(--text-muted)] pb-20">

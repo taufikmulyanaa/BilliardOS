@@ -333,14 +333,14 @@ export default function MembersPage() {
                                 <span className="text-[var(--text-muted)] text-xs uppercase font-bold tracking-wider mb-1">Total Kunjungan</span>
                                 <div className="flex items-end justify-between">
                                     <span className="text-3xl font-bold text-[var(--text-primary)]">{memberStats?.totalVisits || 0}</span>
-                                    <Clock className="text-slate-700" size={32} />
+                                    <Clock className="text-blue-500" size={32} />
                                 </div>
                             </div>
                             <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] p-4 rounded flex flex-col">
                                 <span className="text-[var(--text-muted)] text-xs uppercase font-bold tracking-wider mb-1">Total Belanja</span>
                                 <div className="flex items-end justify-between">
                                     <span className="text-2xl font-bold text-[var(--text-primary)]">Rp {memberStats?.totalSpent ? (memberStats.totalSpent / 1000000).toFixed(1) + 'jt' : '0'}</span>
-                                    <Banknote className="text-slate-700" size={32} />
+                                    <Banknote className="text-green-500" size={32} />
                                 </div>
                             </div>
                             <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] p-4 rounded flex flex-col relative overflow-hidden">

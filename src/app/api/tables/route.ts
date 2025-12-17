@@ -85,17 +85,52 @@ export async function GET() {
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { id, name, type, hourlyRate } = createTableSchema.parse(body);
+        const { id: providedId, name, type, hourlyRate } = createTableSchema.extend({
+            id: z.string().optional()
+        }).parse(body);
 
-        // Check if table ID exists
-        const existing = await prisma.table.findUnique({ where: { id } });
-        if (existing) {
-            return NextResponse.json({ error: "Table ID already exists" }, { status: 400 });
+        let id = providedId;
+
+        if (!id) {
+            // Auto-generate ID: T{number}
+            const tables = await prisma.table.findMany({ select: { id: true } });
+
+            // Extract numbers from IDs like "T01", "T05", "VIP-1" -> gets messy
+            // Simplified: Find max number in IDs starting with "T"
+            const maxId = tables.reduce((max, t) => {
+                if (t.id.startsWith('T') && !isNaN(Number(t.id.substring(1)))) {
+                    return Math.max(max, Number(t.id.substring(1)));
+                }
+                return max;
+            }, 0);
+
+            const nextNum = maxId + 1;
+            id = `T${nextNum.toString().padStart(2, '0')}`;
+
+            // Double check uniqueness (rare race condition possible but acceptable for MVP)
+            let unique = false;
+            let counter = 0;
+            while (!unique && counter < 5) {
+                const exists = await prisma.table.findUnique({ where: { id } });
+                if (!exists) {
+                    unique = true;
+                } else {
+                    id = `T${(nextNum + ++counter).toString().padStart(2, '0')}`;
+                }
+            }
+        }
+
+        // Check if table ID exists (if manually provided)
+        if (providedId) {
+            const existing = await prisma.table.findUnique({ where: { id: providedId } });
+            if (existing) {
+                return NextResponse.json({ error: "Table ID already exists" }, { status: 400 });
+            }
         }
 
         const table = await prisma.table.create({
             data: {
-                id,
+                id: id!,
                 name,
                 type,
                 hourlyRate,

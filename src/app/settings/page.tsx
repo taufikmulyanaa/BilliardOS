@@ -165,9 +165,8 @@ const TableModal = ({ table, onClose, onSave }: { table?: any, onClose: () => vo
                     {!table && (
                         <div>
                             <label className="text-xs text-slate-500 uppercase font-bold block mb-1">Table ID</label>
-                            <input type="text" value={form.id} onChange={e => setForm({ ...form, id: e.target.value })} required
-                                placeholder="e.g., T01, VIP-1"
-                                className="w-full bg-[#050a07] border border-[#1e3328] rounded p-2 text-white" />
+                            <input type="text" disabled value="Auto-generated"
+                                className="w-full bg-[#050a07] border border-[#1e3328] rounded p-2 text-slate-500 italic cursor-not-allowed" />
                         </div>
                     )}
                     <div>

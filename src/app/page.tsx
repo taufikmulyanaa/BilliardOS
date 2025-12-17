@@ -11,7 +11,7 @@ export default function Home() {
     const hasToken = document.cookie.includes('token=');
 
     if (hasToken) {
-      router.push('/dashboard');
+      router.push('/login');
     } else {
       router.push('/login');
     }

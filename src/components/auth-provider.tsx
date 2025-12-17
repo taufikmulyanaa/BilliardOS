@@ -78,8 +78,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (!loading && !data?.user && pathname !== '/login' && pathname !== '/logout') {
             router.push('/login');
         }
-        if (!loading && data?.user && pathname === '/login') {
+        if (!loading && data?.user && (pathname === '/login' || pathname === '/')) {
             router.push(getRedirectPath(data.user.role));
+        }
+
+        // Redirect Manager/Admin away from Cashier Dashboard
+        if (!loading && data?.user && pathname === '/dashboard') {
+            const path = getRedirectPath(data.user.role);
+            if (path !== '/dashboard') {
+                router.push(path);
+            }
         }
     }, [data, loading, pathname, router]);
 

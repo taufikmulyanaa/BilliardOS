@@ -21,7 +21,7 @@ export async function POST() {
             const activeReservation = await prisma.reservation.findFirst({
                 where: {
                     status: 'CONFIRMED',
-                    tableType: table.tableType,
+                    tableType: table.type,
                     bookingDate: {
                         gte: today
                     }

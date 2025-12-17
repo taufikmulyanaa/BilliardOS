@@ -1,0 +1,228 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+
+model User {
+  id            Int           @id @default(autoincrement())
+  username      String        @unique
+  passwordHash  String        @map("password_hash")
+  fullName      String        @map("full_name")
+  role          Role          @default(CASHIER)
+  pinCode       String?       @map("pin_code")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  shiftReports  ShiftReport[]
+
+  @@map("users")
+}
+
+model Member {
+  id              Int                 @id @default(autoincrement())
+  memberCode      String              @unique @map("member_code")
+  fullName        String              @map("full_name")
+  phone           String
+  tier            Tier                @default(BRONZE)
+  pointsBalance   Int                 @default(0) @map("points_balance")
+  joinDate        DateTime            @default(now()) @map("join_date") @db.Date
+  status          MemberStatus        @default(ACTIVE)
+  lastVisitAt     DateTime?           @map("last_visit_at")
+  transactions    PointTransaction[]
+  sessions        TableSession[]
+  orders          Order[]
+
+  @@map("members")
+}
+
+model PointTransaction {
+  id          Int       @id @default(autoincrement())
+  memberId    Int       @map("member_id")
+  member      Member    @relation(fields: [memberId], references: [id])
+  type        PointType @map("type")
+  amount      Int
+  description String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@map("point_transactions")
+}
+
+model Table {
+  id          String         @id
+  name        String
+  type        TableType
+  hourlyRate  Decimal        @map("hourly_rate")
+  status      TableStatus    @default(AVAILABLE)
+  sessions    TableSession[]
+  reservations Reservation[]
+
+  @@map("tables")
+}
+
+model TableSession {
+  id              Int           @id @default(autoincrement())
+  tableId         String        @map("table_id")
+  table           Table         @relation(fields: [tableId], references: [id])
+  customerName    String?       @map("customer_name")
+  memberId        Int?          @map("member_id")
+  member          Member?       @relation(fields: [memberId], references: [id])
+  startTime       DateTime      @default(now()) @map("start_time")
+  endTime         DateTime?     @map("end_time")
+  durationMinutes Int?          @map("duration_minutes")
+  totalCost       Decimal?      @map("total_cost")
+  status          SessionStatus @default(OPEN)
+  pax             Int           @default(1)
+  orders          Order[]
+
+  @@map("table_sessions")
+}
+
+model Product {
+  id          String          @id
+  name        String
+  category    ProductCategory
+  price       Decimal
+  stockQty    Int             @map("stock_qty")
+  imageUrl    String?         @map("image_url")
+  isActive    Boolean         @default(true) @map("is_active")
+  orderItems  OrderItem[]
+
+  @@map("products")
+}
+
+model Order {
+  id            Int             @id @default(autoincrement())
+  invoiceNo     String          @unique @map("invoice_no")
+  sessionId     Int?            @map("session_id")
+  session       TableSession?   @relation(fields: [sessionId], references: [id])
+  memberId      Int?            @map("member_id")
+  customerName  String?         @map("customer_name")
+  member        Member?         @relation(fields: [memberId], references: [id])
+  subtotal      Decimal
+  discountAmount Decimal        @default(0) @map("discount_amount")
+  pointsRedeemed Int            @default(0) @map("points_redeemed")
+  taxAmount     Decimal         @map("tax_amount")
+  totalAmount   Decimal         @map("total_amount")
+  paymentMethod PaymentMethod   @map("payment_method")
+  paymentStatus PaymentStatus   @default(PENDING) @map("payment_status")
+  createdAt     DateTime        @default(now()) @map("created_at")
+  items         OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id          Int      @id @default(autoincrement())
+  orderId     Int      @map("order_id")
+  order       Order    @relation(fields: [orderId], references: [id])
+  productId   String?  @map("product_id")
+  product     Product? @relation(fields: [productId], references: [id])
+  itemName    String   @map("item_name")
+  quantity    Int
+  unitPrice   Decimal  @map("unit_price")
+  totalPrice  Decimal  @map("total_price")
+
+  @@map("order_items")
+}
+
+model Reservation {
+  id              Int               @id @default(autoincrement())
+  customerName    String            @map("customer_name")
+  phone           String
+  bookingDate     DateTime          @map("booking_date") @db.Date
+  bookingTime     DateTime          @map("booking_time") @db.Time
+  pax             Int
+  tableType       TableType         @map("table_type")
+  assignedTableId String?           @map("assigned_table_id")
+  assignedTable   Table?            @relation(fields: [assignedTableId], references: [id])
+  status          ReservationStatus @default(PENDING)
+  notes           String?
+
+  @@map("reservations")
+}
+
+model ShiftReport {
+  id              Int      @id @default(autoincrement())
+  staffId         Int      @map("staff_id")
+  staff           User     @relation(fields: [staffId], references: [id])
+  openedAt        DateTime @map("opened_at")
+  closedAt        DateTime? @map("closed_at")
+  openingCash     Decimal  @map("opening_cash")
+  systemCash      Decimal  @map("system_cash")
+  actualCash      Decimal  @map("actual_cash")
+  variance        Decimal
+  varianceReason  String?  @map("variance_reason")
+
+  @@map("shift_reports")
+}
+
+enum Role {
+  ADMIN
+  CASHIER
+  MANAGER
+}
+
+enum Tier {
+  GOLD
+  SILVER
+  BRONZE
+}
+
+enum MemberStatus {
+  ACTIVE
+  EXPIRED
+  BANNED
+}
+
+enum PointType {
+  EARN
+  REDEEM
+}
+
+enum TableType {
+  VIP
+  REGULAR
+}
+
+enum TableStatus {
+  AVAILABLE
+  ACTIVE
+  BOOKED
+  CLEANING
+}
+
+enum SessionStatus {
+  OPEN
+  PAUSED
+  CLOSED
+}
+
+enum ProductCategory {
+  FOOD
+  DRINK
+  SNACK
+}
+
+enum PaymentMethod {
+  CASH
+  QRIS
+  DEBIT
+  CREDIT
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  CANCELLED
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}

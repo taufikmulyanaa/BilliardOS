@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@theme {
+  /* Billiard Color Palette */
+  --color-base: #0f2922;
+  --color-surface: #1a4332;
+  --color-accent: #4a9c2e;
+  --color-accent-light: #a4c752;
+  --color-cream: #f5f0e1;
+}
+
+:root {
+  /* Backgrounds */
+  --bg-base: #0d2720;
+  --bg-surface: #1a4332;
+  --bg-card: #1a4332;
+  --bg-elevated: #2a5a45;
+  --bg-overlay: rgba(15, 41, 34, 0.9);
+
+  /* Text - BRIGHTER for better contrast */
+  --text-primary: #ffffff;
+  --text-secondary: #c8e6c9;
+  --text-muted: #8fbc8f;
+  --text-inverse: #0f2922;
+
+  /* Borders */
+  --border-default: #2a5a45;
+  --border-active: #B4E50D;
+
+  /* Accents */
+  --accent-primary: #B4E50D;
+  --accent-secondary: #B4E50D;
+
+  /* Status */
+  --danger: #ef4444;
+  --danger-light: rgba(239, 68, 68, 0.15);
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+}
+
+/* Ensure good contrast for all text */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-primary);
+}

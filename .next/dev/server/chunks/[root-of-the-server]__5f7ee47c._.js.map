@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 46, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/Lenovo/Documents/BilliardOS/app/src/app/api/auth/logout/route.ts"],"sourcesContent":["import { NextResponse } from \"next/server\";\r\nimport { cookies } from \"next/headers\";\r\n\r\nexport async function POST() {\r\n    (await cookies()).delete(\"token\");\r\n    return NextResponse.json({ success: true, message: \"Logged out\" });\r\n}\r\n"],"names":[],"mappings":";;;;AAAA;AACA;;;AAEO,eAAe;IAClB,CAAC,MAAM,IAAA,4IAAO,GAAE,EAAE,MAAM,CAAC;IACzB,OAAO,gJAAY,CAAC,IAAI,CAAC;QAAE,SAAS;QAAM,SAAS;IAAa;AACpE"}}]
-}

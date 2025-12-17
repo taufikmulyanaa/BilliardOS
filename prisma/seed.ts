@@ -34,7 +34,29 @@ async function main() {
         },
     });
 
-    console.log('✅ Staff created');
+    // Manager User
+    const managerHash = await bcrypt.hash('manager123', salt);
+    await prisma.user.create({
+        data: {
+            username: 'manager',
+            fullName: 'Manager Staff',
+            role: Role.MANAGER,
+            passwordHash: managerHash,
+        },
+    });
+
+    // Cashier User
+    const cashierHash = await bcrypt.hash('cashier123', salt);
+    await prisma.user.create({
+        data: {
+            username: 'cashier',
+            fullName: 'Kasir Staff',
+            role: Role.CASHIER,
+            passwordHash: cashierHash,
+        },
+    });
+
+    console.log('✅ Staff created (Admin, Manager, Cashier)');
 
     // 3. Tables
     const tables = [

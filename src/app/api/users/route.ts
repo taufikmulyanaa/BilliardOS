@@ -19,6 +19,7 @@ export async function GET() {
                 username: true,
                 fullName: true,
                 role: true,
+                pinCode: true,
                 createdAt: true,
             },
             orderBy: { createdAt: 'desc' }

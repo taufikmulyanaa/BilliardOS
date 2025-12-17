@@ -10,14 +10,15 @@ datasource db {
 
 
 model User {
-  id            Int           @id @default(autoincrement())
-  username      String        @unique
-  passwordHash  String        @map("password_hash")
-  fullName      String        @map("full_name")
-  role          Role          @default(CASHIER)
-  pinCode       String?       @map("pin_code")
-  createdAt     DateTime      @default(now()) @map("created_at")
-  shiftReports  ShiftReport[]
+  id               Int               @id @default(autoincrement())
+  username         String            @unique
+  passwordHash     String            @map("password_hash")
+  fullName         String            @map("full_name")
+  role             Role              @default(CASHIER)
+  pinCode          String?           @map("pin_code")
+  createdAt        DateTime          @default(now()) @map("created_at")
+  shiftReports     ShiftReport[]
+  stockAdjustments StockAdjustment[]
 
   @@map("users")
 }
@@ -97,14 +98,15 @@ model TableSession {
 }
 
 model Product {
-  id          String          @id
-  name        String
-  category    ProductCategory
-  price       Decimal
-  stockQty    Int             @map("stock_qty")
-  imageUrl    String?         @map("image_url")
-  isActive    Boolean         @default(true) @map("is_active")
-  orderItems  OrderItem[]
+  id               String            @id
+  name             String
+  category         ProductCategory
+  price            Decimal
+  stockQty         Int               @map("stock_qty")
+  imageUrl         String?           @map("image_url")
+  isActive         Boolean           @default(true) @map("is_active")
+  orderItems       OrderItem[]
+  stockAdjustments StockAdjustment[]
 
   @@map("products")
 }
@@ -250,3 +252,64 @@ enum ReservationStatus {
   CANCELLED
   COMPLETED
 }
+
+// ==================== MANAGER MODE MODELS ====================
+
+model Promo {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  type        PromoType
+  value       Decimal
+  minPurchase Decimal?  @map("min_purchase")
+  startDate   DateTime? @map("start_date")
+  endDate     DateTime? @map("end_date")
+  startTime   String?   @map("start_time") // HH:mm format for happy hour
+  endTime     String?   @map("end_time")
+  daysOfWeek  String?   @map("days_of_week") // comma-separated: 0,1,2,3,4,5,6
+  tableTypes  String?   @map("table_types") // comma-separated: VIP,REGULAR,SNOOKER
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@map("promos")
+}
+
+enum PromoType {
+  PERCENTAGE
+  FIXED_AMOUNT
+  HAPPY_HOUR
+}
+
+model StockAdjustment {
+  id          Int            @id @default(autoincrement())
+  productId   String         @map("product_id")
+  product     Product        @relation(fields: [productId], references: [id])
+  adjustType  AdjustmentType @map("adjust_type")
+  quantity    Int
+  previousQty Int            @map("previous_qty")
+  newQty      Int            @map("new_qty")
+  reason      String?
+  adjustedBy  Int            @map("adjusted_by")
+  adjuster    User           @relation(fields: [adjustedBy], references: [id])
+  createdAt   DateTime       @default(now()) @map("created_at")
+
+  @@map("stock_adjustments")
+}
+
+enum AdjustmentType {
+  IN
+  OUT
+  CORRECTION
+  INITIAL
+}
+
+model BusinessConfig {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("business_config")
+}
+

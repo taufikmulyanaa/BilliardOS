@@ -25,6 +25,12 @@ const AuthContext = createContext<AuthContextType>({
     logout: async () => { },
 });
 
+// Helper function to determine redirect path based on role
+const getRedirectPath = (role: string): string => {
+    if (role === 'MANAGER') return '/manager';
+    return '/dashboard'; // ADMIN, CASHIER and default
+};
+
 const fetcher = async (url: string) => {
     const res = await fetch(url);
     if (!res.ok) {
@@ -73,7 +79,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             router.push('/login');
         }
         if (!loading && data?.user && pathname === '/login') {
-            router.push('/dashboard');
+            router.push(getRedirectPath(data.user.role));
         }
     }, [data, loading, pathname, router]);
 
@@ -85,8 +91,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         });
 
         if (res.ok) {
+            const responseData = await res.json();
             await mutate(); // Revalidate user
-            router.push('/dashboard');
+            router.push(getRedirectPath(responseData.user.role));
         } else {
             throw await res.json();
         }

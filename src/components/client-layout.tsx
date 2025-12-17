@@ -14,13 +14,14 @@ export default function ClientLayout({
 }) {
     const pathname = usePathname();
     const isAuthPage = pathname === '/login' || pathname === '/register';
+    const isManagerPage = pathname.startsWith('/manager');
 
     return (
         <ThemeProvider>
             <AuthProvider>
                 <ToastProvider>
-                    {isAuthPage ? (
-                        // Auth pages render children directly without layout
+                    {isAuthPage || isManagerPage ? (
+                        // Auth pages and Manager pages render children directly (Manager has its own layout)
                         <>{children}</>
                     ) : (
                         // App pages get the full layout with header

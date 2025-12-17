@@ -20,6 +20,17 @@ const protectedApiRoutes: Record<string, string[]> = {
     "POST /api/tables": ["ADMIN", "MANAGER"],
     "PATCH /api/tables": ["ADMIN", "MANAGER"],
     "DELETE /api/tables": ["ADMIN", "MANAGER"],
+    // Manager mode APIs
+    "GET /api/reports/manager": ["ADMIN", "MANAGER"],
+    "GET /api/promos": ["ADMIN", "MANAGER"],
+    "POST /api/promos": ["ADMIN", "MANAGER"],
+    "PATCH /api/promos": ["ADMIN", "MANAGER"],
+    "DELETE /api/promos": ["ADMIN", "MANAGER"],
+    "GET /api/stock-adjustments": ["ADMIN", "MANAGER"],
+    "POST /api/stock-adjustments": ["ADMIN", "MANAGER", "CASHIER"],
+    "GET /api/config": ["ADMIN", "MANAGER"],
+    "PATCH /api/config": ["ADMIN", "MANAGER"],
+    "GET /api/export": ["ADMIN", "MANAGER"],
     // Any authenticated user
     "GET /api/": [],
     "POST /api/transactions": [],
@@ -40,6 +51,11 @@ const protectedUiPaths = [
     "/settings",
 ];
 
+// Paths that require specific roles
+const roleProtectedUiPaths: Record<string, string[]> = {
+    "/manager": ["ADMIN", "MANAGER"],
+};
+
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
     const method = request.method;
@@ -52,7 +68,32 @@ export async function middleware(request: NextRequest) {
     // 2. Get token
     const token = request.cookies.get("token")?.value;
 
-    // 3. Protect UI routes
+    // 3. Check role-protected UI routes (manager, admin sections)
+    for (const [pathPrefix, allowedRoles] of Object.entries(roleProtectedUiPaths)) {
+        if (pathname.startsWith(pathPrefix)) {
+            if (!token) {
+                const loginUrl = new URL("/login", request.url);
+                loginUrl.searchParams.set("redirect", pathname);
+                return NextResponse.redirect(loginUrl);
+            }
+
+            const payload = await verifyJWT(token);
+            if (!payload) {
+                const loginUrl = new URL("/login", request.url);
+                return NextResponse.redirect(loginUrl);
+            }
+
+            const userRole = payload.role as string;
+            if (!allowedRoles.includes(userRole)) {
+                // Redirect to dashboard if user doesn't have required role
+                return NextResponse.redirect(new URL("/dashboard", request.url));
+            }
+
+            return NextResponse.next();
+        }
+    }
+
+    // 4. Protect general UI routes
     if (protectedUiPaths.some((path) => pathname.startsWith(path))) {
         if (!token) {
             const loginUrl = new URL("/login", request.url);
@@ -108,5 +149,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/api/:path*", "/dashboard/:path*", "/pos/:path*", "/members/:path*", "/reservations/:path*", "/reports/:path*", "/inventory/:path*"],
+    matcher: ["/api/:path*", "/dashboard/:path*", "/pos/:path*", "/members/:path*", "/reservations/:path*", "/reports/:path*", "/inventory/:path*", "/manager/:path*", "/settings/:path*"],
 };

@@ -13,6 +13,19 @@ export default function Header() {
     const pathname = usePathname();
     const router = useRouter();
     const [showProfileMenu, setShowProfileMenu] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [showSearchResults, setShowSearchResults] = useState(false);
+
+    const searchableFeatures = [
+        { label: 'Dashboard / Meja', path: '/dashboard' },
+        { label: 'POS / Kasir F&B', path: '/pos' },
+        { label: 'Reservasi', path: '/reservations' },
+        { label: 'Membership', path: '/members' },
+        { label: 'Laporan Transaksi', path: '/reports' },
+        { label: 'Inventory / Stok', path: '/inventory' },
+        { label: 'Settings', path: '/settings' },
+        { label: 'Profile', path: '/profile' },
+    ];
 
 
     const isActive = (path: string) => {
@@ -56,23 +69,64 @@ export default function Header() {
                     </div>
                 </div>
 
-                <div className="h-8 w-px mx-2" style={{ backgroundColor: 'var(--border-default)' }}></div>
+                <div className="flex items-center gap-6 relative">
+                    <div className="h-8 w-px mx-2" style={{ backgroundColor: 'var(--border-default)' }}></div>
 
-                <label className="flex flex-col min-w-64 h-9">
-                    <div className="flex w-full flex-1 items-stretch rounded transition-colors group" style={{
-                        backgroundColor: 'var(--bg-base)',
-                        border: '1px solid var(--border-default)'
-                    }}>
-                        <div className="flex items-center justify-center pl-3" style={{ color: 'var(--text-muted)' }}>
-                            <Search size={18} />
-                        </div>
-                        <input
-                            className="flex w-full min-w-0 flex-1 bg-transparent border-none focus:ring-0 px-3 text-sm outline-none"
-                            placeholder="Cari fitur..."
-                            style={{ color: 'var(--text-primary)' }}
-                        />
+                    <div className="relative z-50">
+                        <label className="flex flex-col min-w-64 h-9">
+                            <div className="flex w-full flex-1 items-stretch rounded transition-colors group" style={{
+                                backgroundColor: 'var(--bg-base)',
+                                border: '1px solid var(--border-default)'
+                            }}>
+                                <div className="flex items-center justify-center pl-3" style={{ color: 'var(--text-muted)' }}>
+                                    <Search size={18} />
+                                </div>
+                                <input
+                                    className="flex w-full min-w-0 flex-1 bg-transparent border-none focus:ring-0 px-3 text-sm outline-none"
+                                    placeholder="Cari fitur..."
+                                    style={{ color: 'var(--text-primary)' }}
+                                    value={searchQuery}
+                                    onChange={(e) => {
+                                        setSearchQuery(e.target.value);
+                                        setShowSearchResults(true);
+                                    }}
+                                    onFocus={() => setShowSearchResults(true)}
+                                    onBlur={() => setTimeout(() => setShowSearchResults(false), 200)}
+                                />
+                            </div>
+                        </label>
+
+                        {/* Search Results Dropdown */}
+                        {showSearchResults && searchQuery && (
+                            <div className="absolute top-full left-0 w-full mt-2 rounded-lg shadow-xl overflow-hidden z-50" style={{
+                                backgroundColor: 'var(--bg-surface)',
+                                border: '1px solid var(--border-default)'
+                            }}>
+                                <div className="py-1">
+                                    {searchableFeatures.filter(f => f.label.toLowerCase().includes(searchQuery.toLowerCase())).map((feature) => (
+                                        <button
+                                            key={feature.path}
+                                            onClick={() => {
+                                                router.push(feature.path);
+                                                setSearchQuery('');
+                                                setShowSearchResults(false);
+                                            }}
+                                            className="w-full text-left px-4 py-2 text-sm hover:bg-[var(--bg-elevated)] transition-colors flex items-center justify-between group"
+                                        >
+                                            <span style={{ color: 'var(--text-primary)' }}>{feature.label}</span>
+                                            <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: 'var(--text-muted)' }}>Jump to</span>
+                                        </button>
+                                    ))}
+                                    {searchableFeatures.filter(f => f.label.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 && (
+                                        <div className="px-4 py-3 text-sm text-center" style={{ color: 'var(--text-muted)' }}>
+                                            Tidak ditemukan "{searchQuery}"
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
                     </div>
-                </label>
+                </div>
             </div>
 
             <div className="flex items-center gap-6">

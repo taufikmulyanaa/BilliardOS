@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
 const updateRateSchema = z.object({
-    type: z.enum(['VIP', 'REGULAR']),
+    type: z.enum(['VIP', 'REGULAR', 'SNOOKER']),
     rate: z.number().min(0),
 });
 

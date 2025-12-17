@@ -181,6 +181,7 @@ const TableModal = ({ table, onClose, onSave }: { table?: any, onClose: () => vo
                             className="w-full bg-[#050a07] border border-[#1e3328] rounded p-2 text-white">
                             <option value="REGULAR">Regular</option>
                             <option value="VIP">VIP</option>
+                            <option value="SNOOKER">Snooker</option>
                         </select>
                     </div>
                     <div>
@@ -428,6 +429,42 @@ export default function SettingsPage() {
                                         </button>
                                     </div>
                                 </div>
+                                <div className="bg-[#16261d] p-4 rounded-lg border border-[#1e3328]">
+                                    <div className="flex justify-between items-center mb-3">
+                                        <h5 className="font-bold text-red-400">SNOOKER Tables</h5>
+                                        <span className="text-xs text-slate-400">Apply to all Snooker tables</span>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <input
+                                            type="number"
+                                            placeholder="Hourly Rate (Rp)"
+                                            className="flex-1 bg-[#050a07] border border-[#1e3328] rounded p-2 text-white"
+                                            id="snooker-rate-input"
+                                        />
+                                        <button
+                                            onClick={async () => {
+                                                const input = document.getElementById('snooker-rate-input') as HTMLInputElement;
+                                                const rate = Number(input.value);
+                                                if (!rate) return showToast('error', 'Please enter a valid rate');
+                                                if (!confirm(`Update ALL SNOOKER tables to Rp ${rate.toLocaleString()}?`)) return;
+
+                                                try {
+                                                    const res = await fetch('/api/tables/update-rates', {
+                                                        method: 'POST',
+                                                        headers: { 'Content-Type': 'application/json' },
+                                                        body: JSON.stringify({ type: 'SNOOKER', rate })
+                                                    });
+                                                    if (!res.ok) throw new Error('Failed to update');
+                                                    showToast('success', 'Snooker rates updated');
+                                                    mutateTables();
+                                                } catch (e) { showToast('error', 'Failed to update rates'); }
+                                            }}
+                                            className="px-4 py-2 bg-red-500/80 hover:bg-red-500 text-white font-bold rounded text-sm"
+                                        >
+                                            Update All
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -449,8 +486,10 @@ export default function SettingsPage() {
                                             <td className="p-4 text-slate-500 font-mono text-sm">{table.id}</td>
                                             <td className="p-4 text-white font-bold">{table.name}</td>
                                             <td className="p-4">
-                                                <span className={`px-2 py-1 rounded text-xs font-bold ${table.type === 'VIP' ? 'bg-[#eab308]/20 text-[#eab308]' : 'bg-slate-500/20 text-slate-400'
-                                                    }`}>
+                                                <span className={`px-2 py-1 rounded text-xs font-bold 
+                                                    ${table.type === 'VIP' ? 'bg-[#eab308]/20 text-[#eab308]' :
+                                                        table.type === 'SNOOKER' ? 'bg-red-500/20 text-red-500' :
+                                                            'bg-slate-500/20 text-slate-400'}`}>
                                                     {table.type}
                                                 </span>
                                             </td>

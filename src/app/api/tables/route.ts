@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 const createTableSchema = z.object({
     id: z.string().min(1),
     name: z.string().min(1),
-    type: z.enum(['REGULAR', 'VIP']),
+    type: z.enum(['REGULAR', 'VIP', 'SNOOKER']),
     hourlyRate: z.number().min(0),
 });
 

@@ -186,6 +186,7 @@ enum PointType {
 enum TableType {
   VIP
   REGULAR
+  SNOOKER
 }
 
 enum TableStatus {

@@ -1053,7 +1053,12 @@ export default function DashboardPage() {
                                     <div className="flex justify-between items-start mb-2">
                                         <div className="flex flex-col">
                                             <span className="font-bold text-xl leading-none">{table.name}</span>
-                                            <span className="text-xs opacity-70 mt-1.5 uppercase tracking-wide font-semibold">{table.type || 'REGULAR'} Table</span>
+                                            <span className={`text-[10px] mt-1.5 uppercase tracking-wide font-bold px-2 py-0.5 rounded border w-fit ${(table.type === 'VIP')
+                                                    ? 'text-[#c084fc] border-[#c084fc]/30 bg-[#c084fc]/10'
+                                                    : 'text-[#4ade80] border-[#4ade80]/30 bg-[#4ade80]/10'
+                                                }`}>
+                                                {table.type || 'REGULAR'}
+                                            </span>
                                         </div>
                                         {table.status === 'ACTIVE' && <div className="animate-pulse size-3 rounded-full bg-[var(--accent-primary)] shadow-[0_0_10px_#f07000]"></div>}
                                     </div>
@@ -1123,7 +1128,12 @@ export default function DashboardPage() {
                                             }`}></div>
                                         <div>
                                             <h3 className="font-bold text-[var(--text-primary)] text-lg">{table.name}</h3>
-                                            <p className="text-xs text-[var(--text-muted)]">{table.type || 'REGULAR'} Table</p>
+                                            <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded border ${(table.type === 'VIP')
+                                                    ? 'text-[#c084fc] border-[#c084fc]/30 bg-[#c084fc]/10'
+                                                    : 'text-[#4ade80] border-[#4ade80]/30 bg-[#4ade80]/10'
+                                                }`}>
+                                                {table.type || 'REGULAR'}
+                                            </span>
                                         </div>
                                     </div>
 
